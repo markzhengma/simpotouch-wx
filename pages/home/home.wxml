@@ -1,0 +1,26 @@
+<!--pages/home.wxml-->
+<text>活动列表</text>
+<block wx:for="{{eventData}}" wx:key="unique">
+  <view id="{{index}}" class="tr bg-w" wx:if="{{index % 2 == 0}}">
+    <view>活动：{{item.title}}</view>
+    <view>标签：{{item.tags}}</view>
+    <view>创建人ID：{{item.userid}}</view>
+    <view>地点：{{item.location}}</view>
+    <view>日期：{{item.start_date}} - {{item.end_date}}</view>
+    <view>时间：{{item.start_time}} - {{item.end_time}}</view>
+    <view>人数上限：{{item.total_attend}}</view>
+    <view>已报名：{{item.curr_attend}}</view>
+    <view>描述：{{item.info}}</view>
+  </view>
+  <view id="{{index}}" class="tr bg-g" wx:else>
+    <view>活动：{{item.title}}</view>
+    <view>标签：{{item.tags}}</view>
+    <view>创建人ID：{{item.userid}}</view>
+    <view>地点：{{item.location}}</view>
+    <view>日期：{{item.start_date}} - {{item.end_date}}</view>
+    <view>时间：{{item.start_time}} - {{item.end_time}}</view>
+    <view>人数上限：{{item.total_attend}}</view>
+    <view>已报名：{{item.curr_attend}}</view>
+    <view>描述：{{item.info}}</view>
+  </view>
+</block>
