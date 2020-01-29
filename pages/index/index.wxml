@@ -1,4 +1,3 @@
-<!--pages/home.wxml-->
 <text>活动列表</text>
 <block wx:for="{{eventData}}" wx:key="unique">
   <view id="{{index}}" class="tr bg-w" wx:if="{{index % 2 == 0}}">

@@ -19,10 +19,14 @@ Page({
    */
   onLoad: function () {
     const setAllData = data => { 
-      console.log(data);
-      this.setData({
-        eventData: data
-      })
+      if(data.code !== 200){
+        alert('啊哟，网络开小差了，请稍等一下再试！');
+        console.log(data);
+      } else {
+        this.setData({
+          eventData: data.data
+        })
+      }
     };
     event.getAllEvent(setAllData);
   },
