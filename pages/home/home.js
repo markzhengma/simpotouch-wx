@@ -2,6 +2,8 @@
 
 const app = getApp();
 const util = require('../../utils/util');
+const EventController = require('../../controllers/event');
+const event = new EventController;
 
 Page({
 
@@ -16,18 +18,13 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function () {
-    const callback = data => { 
+    const setAllData = data => { 
       console.log(data);
       this.setData({
         eventData: data
       })
     };
-    util.request(
-      'https://api.simpotouch.com/api/v1/event/all',
-      {},
-      'GET',
-      callback
-    );
+    event.getAllEvent(setAllData)
   },
 
   /**
