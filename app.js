@@ -2,31 +2,39 @@
 App({
   onLaunch: function () {
     // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        wx.request({
-          url: 'https://api.simpotouch.com/v1/account/wxlogin',
-          header: {
-            'content-type': 'application/json',
-            code: res.code 
-          },
-          success: data => {
-            // console.log(data.data)
-            if(data.data.code !== 200){
-              console.log(data.data.data);
-            } else {
-              console.log(data.data.data.sid)
+    const sid = wx.getStorageSync('sid');
+    if(!sid) {
+      // 登录
+      wx.login({
+        success: res => {
+          // 发送 res.code 到后台换取 openId, sessionKey, unionId
+          wx.request({
+            url: 'https://api.simpotouch.com/v1/account/wxlogin',
+            header: {
+              'content-type': 'application/json',
+              code: res.code 
+            },
+            success: loginRes => {
+              // console.log(data.data)
+              if(loginRes.data.code !== 200){
+                console.log(loginRes.data.data);
+              } else {
+                console.log(loginRes.data.data);
+                try {
+                  wx.setStorageSync('sid', loginRes.data.data.sid);
+                  this.globalData.userAuth = { sid: loginRes.data.data.sid, uid: loginRes.data.data.uid || '' }
+                } catch (e) { 
+                  console.log('failed to save sid to storage')
+                }
+              }
             }
-          }
-        })
-      }
-    })
+          })
+        }
+      })
+    } else {
+      console.log('SID IN STORAGE: ' + sid);
+      this.globalData.userAuth = { sid: sid, uid: '' };
+    }
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -50,6 +58,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    userAuth: null
   }
 })

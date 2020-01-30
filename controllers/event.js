@@ -5,6 +5,7 @@ class EventController {
     util.request(
       'https://api.simpotouch.com/v1/event/all',
       {},
+      {},
       'GET',
       callback
     );

@@ -3,8 +3,21 @@
   <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 登录 </button>
     <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <!-- <text class="userinfo-nickname">微信昵称：{{userInfo.nickName}}</text> -->
+
+      <button bindtap="bindRegisterTap" wx:if="{{!userAuth.uid || userAuth.uid === ''}}">注册</button>
+      <text wx:else>欢迎！{{userCard.username}}</text>
+      <modal 
+        title="创建您的名片" 
+        hidden="{{!showCreateModal}}" 
+        bindconfirm="confirmUserCreate" 
+        bindcancel="cancelUserCreate"
+      >
+        <view>您的名字：<input id="username" value="{{userCreateCard.username}}" bindinput="onUserCreateInput"/></view>
+        <view>您的电话：<input id="phone" value="{{userCreateCard.phone}}" bindinput="onUserCreateInput"/></view>
+      </modal>
+
     </block>
   </view>
 </view>

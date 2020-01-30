@@ -14,14 +14,12 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
-const request = (url, data, method, callback) => {
+const request = (url, header, data, method, callback) => {
   wx.request({
     url: url,
     method: method,
     data: data,
-    header: {
-      "Content-type": "application/json"
-    },
+    header: header,
     success: function (res) {
       callback(res.data);
     },
