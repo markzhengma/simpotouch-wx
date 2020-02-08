@@ -1,4 +1,4 @@
-const util = require('../utils/util');
+const util = require('../utils/util.js');
 
 class UserController {
   createUser(sid, data, callback){

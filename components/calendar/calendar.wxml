@@ -1,0 +1,49 @@
+<view class='calendar'>
+  <view class="calendar-head">
+    <view class="calendar-btn" style="background-image: url('../../images/left.png')" bindtap="tapChangeMonth" data-diff="-1"></view>
+    <view class="calendar-title">
+      <picker mode="date" value="{{date}}" start="2010-01-01" end="2020-12-31" bindchange="bindPickerDateChange">
+        <view style="width: 100%">{{ displayMonthData.year }}年 {{displayMonthData.month}}月</view>
+      </picker>
+    </view>
+    <view class="calendar-btn" style="background-image: url('../../images/right.png')" bindtap="tapChangeMonth" data-diff="1"></view>
+  </view>
+  <view>
+    <button bindtap="tapDirectlyChangeMonth" data-date="{{today}}">今天</button>
+  </view>
+  <swiper class="calendar-swiper" bindchange="changeSwipe" circular="{{true}}" autoplay="{{false}}">
+    <block wx:for="{{pages}}" wx:key="unique">
+      <swiper-item>
+        <view wx:if="{{item === currentPage}}" class="calendar-table">
+          <!-- <view wx:for="{{weekArr}}" wx:key="unique">
+            <view>{{ item }}</view>
+          </view> -->
+          <view wx:for="{{displayMonthData.calendarObj}}" wx:key="unique" class="calendar-column">
+            <view class="week-box">{{weekArr[index]}}</view>
+            <view wx:for="{{item}}" wx:key="unique" class="calendar-box">
+              <view wx:if="{{item.isCurrent}}" bindtap="selectDate" data-date="{{item.data}}" class="curr-month {{item.data === selectedDate ? 'calendar-box-selected' : ''}}">{{ item.text }}</view>
+              <view wx:else bindtap="selectDate" data-date="{{item.data}}" class="other-month {{item.data === selectedDate ? 'calendar-box-selected' : ''}}">{{ item.text }}</view>
+            </view>
+          </view>
+        </view>
+        <view wx:else class="calendar-table">
+          <view wx:for="{{displayMonthData.calendarObj}}" wx:key="unique" class="calendar-column">
+            <view class="week-box">{{weekArr[index]}}</view>
+            <view wx:for="{{item}}" wx:key="unique" class="calendar-box">
+              <view data-date="{{item.data}}" class="curr-month">{{ item.text }}</view>
+            </view>
+          </view>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view>
+    <text>
+      今天：{{ today }}
+    </text>
+    <text>
+      选中：{{ selectedDate }}
+    </text>
+  </view>
+
+</view>

@@ -1,4 +1,4 @@
-<text>活动列表</text>
+<!-- <text>活动列表</text>
 <block wx:for="{{eventData}}" wx:key="unique">
   <view id="{{index}}" class="tr bg-w" wx:if="{{index % 2 == 0}}">
     <view>活动：{{item.title}}</view>
@@ -22,4 +22,11 @@
     <view>已报名：{{item.curr_attend}}</view>
     <view>描述：{{item.info}}</view>
   </view>
-</block>
+</block> -->
+<!-- <Calendar id="Calendar" bind:select="select"></Calendar>
+<view style='width:90%;margin:0 auto;text-align:center;padding:30rpx 20rpx;border:1rpx dashed #aaa;'>
+  <button type='default' bindtap='toggleType'>切换展示效果</button>
+  <text>index.wxml</text>
+  <view>Selected:{{selectVal}}</view>
+</view> -->
+<Calendar></Calendar>
