@@ -1,15 +1,17 @@
 <view class='calendar'>
   <view class="calendar-head">
-    <view class="calendar-btn" style="background-image: url('../../images/left.png')" bindtap="tapChangeMonth" data-diff="-1"></view>
-    <view class="calendar-title">
-      <picker mode="date" value="{{date}}" start="2010-01-01" end="2020-12-31" bindchange="bindPickerDateChange">
-        <view style="width: 100%">{{ displayMonthData.year }}年 {{displayMonthData.month}}月</view>
-      </picker>
+    <view class="calendar-head-sec">
+      <view class="calendar-btn" style="background-image: url('http://q5f2w1hvx.bkt.clouddn.com/left.png')" bindtap="tapChangeMonth" data-diff="-1"></view>
+      <view class="calendar-title">
+        <picker mode="date" value="{{date}}" start="2010-01-01" end="2020-12-31" bindchange="bindPickerDateChange" style="width: 100%">
+          <view id="calendar-title-text">{{ displayMonthData.year }}年 {{displayMonthData.month}}月</view>
+        </picker>
+      </view>
+      <view class="calendar-btn" style="background-image: url('http://q5f2w1hvx.bkt.clouddn.com/right.png')" bindtap="tapChangeMonth" data-diff="1"></view>
     </view>
-    <view class="calendar-btn" style="background-image: url('../../images/right.png')" bindtap="tapChangeMonth" data-diff="1"></view>
-  </view>
-  <view>
-    <button bindtap="tapDirectlyChangeMonth" data-date="{{today}}">今天</button>
+    <view class="calendar-head-sec">
+      <view bindtap="tapDirectlyChangeMonth" data-date="{{today}}" class="wide-btn">今天</view>
+    </view>
   </view>
   <swiper class="calendar-swiper" bindchange="changeSwipe" circular="{{true}}" autoplay="{{false}}">
     <block wx:for="{{pages}}" wx:key="unique">

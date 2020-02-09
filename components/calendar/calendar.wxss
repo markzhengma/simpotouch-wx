@@ -1,10 +1,16 @@
+.calendar {
+	font-weight: 600;
+}
 .calendar-head {
+	background-color: rgb(90, 106, 121);
+	padding: 10px;
+}
+.calendar-head-sec {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	padding: 10px;
-	height: 70px;
-	background-color: rgb(90, 106, 121);
+	padding: 4px;
+	/* height: 70px; */
 }
 .calendar-title {
 	width: 120px;
@@ -14,16 +20,32 @@
 	text-align: center;
 	font-size: 20px;
 	color: white;
+	background-color: rgb(98, 117, 134);
+	overflow-y: hidden;
+}
+#calendar-title-text {
+	width: 100%; 
+	text-shadow: 1px 1px 10px rgb(82, 82, 82);
 }
 .calendar-btn{
 	height: 60px;
 	width: 60px;
 	background-color: grey;
 	margin: 0 10px;
-	border-radius: 10px;
+	border-radius: 4px;
 	background-position: center;
 	background-size: 70%;
 	background-repeat: no-repeat;
+	box-shadow: 4px 4px 10px rgb(82, 82, 82);
+}
+.wide-btn{
+	height: 40px;
+	width: 180px;
+	border-radius: 4px;
+	background-color: white;
+	box-shadow: 4px 4px 10px rgb(82, 82, 82);
+	line-height: 40px;
+	text-align: center;
 }
 .calendar-btn:active {
 	background-color: rgb(58, 58, 58);
@@ -67,7 +89,8 @@
 	padding: 4px 0;
 	height: fit-content;
 	background-color: thistle;
+	box-shadow: 8px 8px 14px rgb(82, 82, 82);
 }
 .calendar-swiper {
-	height: 350px;
+	height: 400px;
 }

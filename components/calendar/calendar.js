@@ -158,11 +158,17 @@ Component({
 
       const datesArr = this.getDatesArr(1, totalDayCount);
       const prevMonthDatesArr = this.getDatesArr(prevTotalDayCount - firstWeekDay + 1, prevTotalDayCount);
-      const nextMonthDatesArr = lastWeekDay === 6 ? [] : this.getDatesArr(1, 7 - lastWeekDay - 1);
+      const nextMonthDatesArr = datesArr.length + prevMonthDatesArr.length > 35 ? lastWeekDay === 6 ? [] : this.getDatesArr(1, 7 - lastWeekDay - 1) : this.getDatesArr(1, 7 - lastWeekDay - 1 + 7);
 
       const currCalendarArr = this.generateCalendarArr(datesArr, month, year, true);
-      const prevCalendarArr = month === 1 ? this.generateCalendarArr(prevMonthDatesArr, 12, year - 1) : this.generateCalendarArr(prevMonthDatesArr, month - 1, year, false);
-      const nextCalendarArr = month === 12 ? this.generateCalendarArr(nextMonthDatesArr, 1, year + 1) : this.generateCalendarArr(nextMonthDatesArr, month + 1, year, false);
+      const prevCalendarArr = month === 1 ? 
+        this.generateCalendarArr(prevMonthDatesArr, 12, year - 1) 
+        : 
+        this.generateCalendarArr(prevMonthDatesArr, month - 1, year, false);
+      const nextCalendarArr = month === 12 ? 
+        this.generateCalendarArr(nextMonthDatesArr, 1, year + 1) 
+        : 
+        this.generateCalendarArr(nextMonthDatesArr, month + 1, year, false);
       const calendarArr = [ ...prevCalendarArr, ...currCalendarArr,  ...nextCalendarArr];
       let calendarObj = {
         0: [],
@@ -177,6 +183,14 @@ Component({
         const day = date.day;
         calendarObj[day].push(date);
       })
+      this.animate('#calendar-title-text', [
+        { translateY: '-50px' },
+        { translateY: '0px' },
+        ], 100, function () {
+          this.clearAnimation('#calendar-title-text', { translateY: true }, function () {
+            console.log("清除了#container上的opacity和rotate属性")
+          })
+      }.bind(this));
 
       return {
         month,
