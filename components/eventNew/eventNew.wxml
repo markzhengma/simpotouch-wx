@@ -1,2 +1,50 @@
-<!--components/eventNew/eventNew.wxml-->
-<text>components/eventNew/eventNew.wxml</text>
+<view class="container">
+  <view class="new-event-header">
+    <text>新建活动</text>
+  </view>
+  <view class="new-event-content">
+    <view class="new-event-single">
+      <text class="new-event-single-label">标题</text>
+      <input type="text" value="{{newEvent.title}}" id="title" bindinput="onNewEventInput"/>
+    </view>
+    <view class="new-event-single">
+      <text class="new-event-single-label">标签</text>
+      <text>{{newEvent.tags}}</text>
+      <view>
+        <view class="tag" bindtap="selectTag" data-value="标签1">标签1</view>
+        <view class="tag" bindtap="selectTag" data-value="标签2">标签2</view>
+        <view class="tag" bindtap="selectTag" data-value="标签3">标签3</view>
+        <view class="tag" bindtap="selectTag" data-value="标签4">标签4</view>
+      </view>
+    </view>
+    <view class="new-event-single">
+      <text class="new-event-single-label">地点</text>
+      <input type="text" value="{{newEvent.location}}" id="location" bindinput="onNewEventInput"/>
+    </view>
+    <view class="new-event-single">
+      <text class="new-event-single-label">开始日期</text>
+      <input type="text" value="{{newEvent.start_date}}" id="start_date" bindinput="onNewEventInput"/>
+    </view>
+    <view class="new-event-single">
+      <text class="new-event-single-label">结束日期</text>
+      <input type="text" value="{{newEvent.end_date}}" id="end_date" bindinput="onNewEventInput"/>
+    </view>
+    <view class="new-event-single">
+      <text class="new-event-single-label">开始时间</text>
+      <input type="text" value="{{newEvent.start_time}}" id="start_time" bindinput="onNewEventInput"/>
+    </view>
+    <view class="new-event-single">
+      <text class="new-event-single-label">结束时间</text>
+      <input type="text" value="{{newEvent.end_time}}" id="end_time" bindinput="onNewEventInput"/>
+    </view>
+    <view class="new-event-single">
+      <text class="new-event-single-label">人数上限</text>
+      <input type="text" value="{{newEvent.total_attend}}" id="total_attend" bindinput="onNewEventInput"/>
+    </view>
+    <view class="new-event-single">
+      <text class="new-event-single-label">详情</text>
+      <textarea value="{{newEvent.info}}" id="info" bindinput="onNewEventInput"/>
+    </view>
+  </view>
+  <button bindtap="submitNewEvent">新建</button>
+</view>

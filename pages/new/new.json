@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "EventNew": "../../components/eventNew/eventNew"
+  }
+}

@@ -35,7 +35,7 @@
       <view class="user-header">
         <view class="user-title-div">
           <text class="user-title">{{userCard.username || userInfo.nickName}}</text>
-          <text class="user-motto">{{userCard.motto || '探索者'}}</text>
+          <text class="user-motto">{{userCard.motto || '我的简介'}}</text>
         </view>
         <view class="user-avatar-div"><image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image></view>
       </view>
@@ -45,7 +45,12 @@
           <view class="user-detail-single">
             <text class="user-detail-label">性别</text>
             <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.gender}}</text>
-            <input wx:else value="{{userCard.gender}}" id="gender" bindinput="onUserEditInput"/>
+            <!-- <input wx:else value="{{userCard.gender}}" id="gender" bindinput="onUserEditInput"/> -->
+            <view wx:else class="gender-btn-group">
+              <view class="gender-btn {{userEditCard.gender === '男' ? 'btn-selected' : ''}}" bindtap="changeGender" data-gender="男">男</view>
+              <view class="gender-btn {{userEditCard.gender === '女' ? 'btn-selected' : ''}}" bindtap="changeGender" data-gender="女">女</view>
+              <view class="gender-btn {{userEditCard.gender === '保密' ? 'btn-selected' : ''}}" bindtap="changeGender" data-gender="保密">保密</view>
+            </view>
           </view>
           <view class="user-detail-single">
             <text class="user-detail-label">城市</text>

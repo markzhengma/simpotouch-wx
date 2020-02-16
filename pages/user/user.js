@@ -106,7 +106,6 @@ Page({
     });
   },
   getUserInfo: function(e) {
-    console.log(e);
     if(e.detail.errMsg === "getUserInfo:ok"){
       app.globalData.userInfo = e.detail.userInfo;
       this.setData({
@@ -123,7 +122,7 @@ Page({
           app.globalData.userAuth = { sid: sid, uid: res.data.uid };
           this.setData({
             userAuth: app.globalData.userAuth,
-            userCard: { username: res.data.username, phone: res.data.phone },
+            userCard: res.data,
           });
         }
       };
@@ -139,9 +138,17 @@ Page({
     })
   },
   startUserEdit: function() {
+    const userData = this.data.userCard
     this.setData({
       isEditingUser: true,
-      userEditCard: this.data.userCard
+      userEditCard: {
+        username: userData.username,
+        intro: userData.intro,
+        phone: userData.phone,
+        gender: userData.gender,
+        city: userData.city,
+        email: userData.email,
+      }
     })
   },
   onUserEditInput: function(e){
@@ -150,8 +157,6 @@ Page({
     })
   },
   confirmUserEdit: function(){
-    console.log(this.data.userEditCard);
-    console.log(this.data.userAuth);
     const sid = app.globalData.userAuth.sid;
     const uid = app.globalData.userAuth.uid;
     const updateUser = (res) => {
@@ -171,5 +176,12 @@ Page({
       }
     };
     user.updateUser(sid, uid, this.data.userEditCard, updateUser);
+  },
+  changeGender: function(e) {
+    if(this.data.isEditingUser) {
+      this.setData({
+        'userEditCard.gender': e.currentTarget.dataset.gender
+      });
+    }
   }
 })

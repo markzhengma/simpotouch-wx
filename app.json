@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/new/new",
     "pages/index/index",
     "pages/user/user"
   ],
@@ -14,17 +15,26 @@
   "tabBar": {
     "color": "#a9b7b7",
     "selectedColor": "#11cd6e",
-    "borderStyle":"white",
-    "list": [{
-      "selectedIconPath": "images/home_selected.png",
-      "iconPath": "images/home.png",
-      "pagePath": "pages/index/index",
-      "text": "首页"
-    }, {
-      "selectedIconPath": "images/user_selected.png",
-      "iconPath": "images/user.png",
-      "pagePath": "pages/user/user",
-      "text": "用户"
-    }]
+    "borderStyle": "white",
+    "list": [
+      {
+        "selectedIconPath": "images/home_selected.png",
+        "iconPath": "images/home.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "selectedIconPath": "images/plus_selected.png",
+        "iconPath": "images/plus.png",
+        "pagePath": "pages/new/new",
+        "text": "新建"
+      },
+      {
+        "selectedIconPath": "images/user_selected.png",
+        "iconPath": "images/user.png",
+        "pagePath": "pages/user/user",
+        "text": "用户"
+      }
+    ]
   }
 }

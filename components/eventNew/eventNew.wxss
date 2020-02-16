@@ -1,1 +1,29 @@
-/* components/eventNew/eventNew.wxss */
+.new-event-header{
+  font-size: large;
+  margin: 30rpx 0;
+  width: 750rpx;
+  height: 100rpx;
+  text-align: center;
+}
+.new-event-content {
+  margin: 0 30rpx;
+}
+.new-event-single {
+  height: fit-content;
+  margin: 10rpx;
+  background-color: lightslategrey;
+  color: white;
+  padding: 10rpx;
+}
+.new-event-single input {
+  height: 50rpx;
+  background-color: rgb(241, 241, 204);
+  color: grey;
+  padding: 10rpx;
+}
+.new-event-single textarea{
+  background-color: rgb(241, 241, 204);
+  color: grey;
+  width: calc(100% - 20rpx);
+  padding: 10rpx;
+}

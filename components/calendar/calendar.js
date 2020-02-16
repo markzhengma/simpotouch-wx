@@ -2,47 +2,10 @@ const util = require('../../utils/util.js');
 Component({
   //初始默认为当前日期
   properties: {
-    // defaultValue: {
-    //   type: String,
-    //   value: ''
-    // },
-    // //星期数组
-    // weekText: {
-    //   type: Array,
-    //   value: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-    // },
-    // lastMonth: {
-    //   type: String,
-    //   value: '◀'
-    // },
-    // nextMonth: {
-    //   type: String,
-    //   value: '▶'
-    // }
   },
 
   // 组件的初始数据
   data: {
-    // //当月格子
-    // thisMonthDays: [],
-    // //上月格子
-    // empytGridsBefore: [],
-    // //下月格子
-    // empytGridsAfter: [],
-    // //显示日期
-    // title: '',
-    // //格式化日期
-    // format: '',
-
-    // year: 0,
-    // month: 0,
-    // date: 0,
-    // toggleType: 'large',
-    // scrollLeft: 0,
-    // //常量 用于匹配是否为当天
-    // YEAR: 0,
-    // MONTH: 0,
-    // DATE: 0
     today: '',
     displayMonthData: '',
     weekArr: ['日', '一', '二', '三', '四', '五', '六'],
@@ -52,7 +15,6 @@ Component({
     prevPage: 0
   },
   ready: function () {
-    // this.today();
     this.setCurrentMonth();
   },
 

@@ -9,7 +9,7 @@ App({
         success: res => {
           // 发送 res.code 到后台换取 openId, sessionKey, unionId
           wx.request({
-            url: 'http://localhost:7001/v1/account/wxlogin',
+            url: 'https://api.simpotouch.com/v1/account/wxlogin',
             header: {
               'content-type': 'application/json',
               code: res.code 
