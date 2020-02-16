@@ -13,8 +13,8 @@ Page({
     showCreateModal: false,
     userCreateCard: {},
     userCard: {},
-    editDetailCard: {},
-    isEditingDetail: false,
+    userEditCard: {},
+    isEditingUser: false,
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
@@ -33,7 +33,7 @@ Page({
             app.globalData.userAuth = { sid: sid, uid: res.data.uid };
             self.setData({
               userAuth: app.globalData.userAuth,
-              userCard: { username: res.data.username, phone: res.data.phone }
+              userCard: res.data
             });
           }
         };
@@ -85,6 +85,7 @@ Page({
     const updateUserAuth = (res) => {
       if(res.code !== 200){
         console.log('register failed');
+        console.log(res);
       } else {
         this.setData({
           showCreateModal: false,
@@ -92,7 +93,7 @@ Page({
         });
         app.globalData.userAuth = { sid: sid, uid: res.data.uid };
         this.setData({
-          userCard: { username: res.data.username, phone: res.data.phone },
+          userCard: res.data,
           userAuth: app.globalData.userAuth
         })
       }
@@ -131,28 +132,44 @@ Page({
       console.log(this.data)
     };
   },
-  cancelEditDetail: function(){
+  cancelUserEdit: function(){
     this.setData({
-      isEditingDetail: false,
-      editDetailCard: {}
+      isEditingUser: false,
+      userEditCard: {}
     })
   },
-  startEditDetail: function() {
+  startUserEdit: function() {
     this.setData({
-      isEditingDetail: true
+      isEditingUser: true,
+      userEditCard: this.data.userCard
     })
   },
-  onDetailEditInput: function(e){
+  onUserEditInput: function(e){
     this.setData({
-      [`editDetailCard.${e.currentTarget.id}`]: e.detail.value
+      [`userEditCard.${e.currentTarget.id}`]: e.detail.value
     })
   },
-  confirmEditDetail: function(){
-    console.log(this.data.editDetailCard);
+  confirmUserEdit: function(){
+    console.log(this.data.userEditCard);
     console.log(this.data.userAuth);
-    this.setData({
-      isEditingDetail: false,
-      editDetailCard: {}
-    })
+    const sid = app.globalData.userAuth.sid;
+    const uid = app.globalData.userAuth.uid;
+    const updateUser = (res) => {
+      if(res.code !== 200){
+        console.log('update failed');
+        console.log(res);
+      } else {
+        this.setData({
+          isEditingUser: false,
+          userEditCard: {}
+        });
+        app.globalData.userAuth = { sid: sid, uid: res.data.uid };
+        this.setData({
+          userCard: res.data,
+        })
+        console.log(res)
+      }
+    };
+    user.updateUser(sid, uid, this.data.userEditCard, updateUser);
   }
 })

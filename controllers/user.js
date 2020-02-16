@@ -3,7 +3,7 @@ const util = require('../utils/util.js');
 class UserController {
   createUser(sid, data, callback){
     util.request(
-      'https://api.simpotouch.com/v1/user/single',
+      'http://localhost:7001/v1/user/single',
       {
         sid: sid
       },
@@ -15,9 +15,21 @@ class UserController {
       callback
     );
   };
+  updateUser(sid, uid, data, callback){
+    util.request(
+      'http://localhost:7001/v1/user/single',
+      {
+        sid: sid,
+        uid: uid
+      },
+      data,
+      'PUT',
+      callback
+    );
+  };
   findCurrentUser(sid, callback){
     util.request(
-      'https://api.simpotouch.com/v1/user/self',
+      'http://localhost:7001/v1/user/self',
       {
         sid: sid
       },

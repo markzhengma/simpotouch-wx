@@ -44,28 +44,28 @@
         <view class="user-detail">
           <view class="user-detail-single">
             <text class="user-detail-label">性别</text>
-            <text wx:if="{{!isEditingDetail}}" class="user-detail-text">{{userCard.gender}}</text>
-            <input wx:else value="{{userCard.gender}}" id="gender" bindinput="onDetailEditInput"/>
+            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.gender}}</text>
+            <input wx:else value="{{userCard.gender}}" id="gender" bindinput="onUserEditInput"/>
           </view>
           <view class="user-detail-single">
             <text class="user-detail-label">城市</text>
-            <text wx:if="{{!isEditingDetail}}" class="user-detail-text">{{userCard.city}}</text>
-            <input wx:else value="{{userCard.city}}" id="city" bindinput="onDetailEditInput"/>
+            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.city}}</text>
+            <input wx:else value="{{userCard.city}}" id="city" bindinput="onUserEditInput"/>
           </view>
           <view class="user-detail-single">
             <text class="user-detail-label">电话</text>
-            <text wx:if="{{!isEditingDetail}}" class="user-detail-text">{{userCard.phone}}</text>
-            <input wx:else value="{{userCard.phone}}" id="phone" bindinput="onDetailEditInput"/>
+            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.phone}}</text>
+            <input wx:else value="{{userCard.phone}}" id="phone" bindinput="onUserEditInput"/>
           </view>
           <view class="user-detail-single">
             <text class="user-detail-label">邮箱</text>
-            <text wx:if="{{!isEditingDetail}}" class="user-detail-text">{{userCard.email}}</text>
-            <input wx:else value="{{userCard.email}}" id="email" bindinput="onDetailEditInput"/>
+            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.email}}</text>
+            <input wx:else value="{{userCard.email}}" id="email" bindinput="onUserEditInput"/>
           </view>
-          <button wx:if="{{!isEditingDetail}}" class="user-btn edit-btn" bindtap="startEditDetail">编辑</button>
+          <button wx:if="{{!isEditingUser}}" class="user-btn edit-btn" bindtap="startUserEdit">编辑</button>
           <view wx:else>
-            <button class="user-btn save-btn" bindtap="confirmEditDetail">保存</button>
-            <button class="user-btn cancel-btn" bindtap="cancelEditDetail">取消</button>
+            <button class="user-btn save-btn" bindtap="confirmUserEdit">保存</button>
+            <button class="user-btn cancel-btn" bindtap="cancelUserEdit">取消</button>
           </view>
         </view>
       </view>
