@@ -1,23 +1,74 @@
 <!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 登录 </button>
-    <block wx:else>
-      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <!-- <text class="userinfo-nickname">微信昵称：{{userInfo.nickName}}</text> -->
+  <button 
+    wx:if="{{!hasUserInfo && canIUse}}" 
+    open-type="getUserInfo" 
+    bindgetuserinfo="getUserInfo"
+  > 
+    登录 
+  </button>
+  <block wx:else>
+    <modal 
+      wx:if="{{!userAuth.uid || userAuth.uid === ''}}"
+      confirm-text="注册"
+      bindconfirm="bindRegisterTap"
+      no-cancel="{{true}}"
+    >
+      <view><text>嘿，{{userInfo.nickName}}！欢迎来到 SimpoTouch！</text></view>
+      <view><text>注册一个账号来开始你的轻触之旅吧！</text></view>
+    </modal>
+    <modal 
+      class="user-create-box"
+      title="您的轻触名片" 
+      hidden="{{!showCreateModal}}" 
+      bindconfirm="confirmUserCreate" 
+      bindcancel="cancelUserCreate"
+    >
+      <text>SimpoTouch 是基于用户们真实信息的社交平台</text>
+      <view><text>真实姓名：</text></view>
+      <view><input class="input" id="username" value="{{userInfo.nickName}}" bindinput="onUserCreateInput"/></view>
+      <view><text>您的电话：</text></view>
+      <view><input class="input" id="phone" value="{{userCreateCard.phone}}" bindinput="onUserCreateInput"/></view>
+    </modal>
 
-      <button bindtap="bindRegisterTap" wx:if="{{!userAuth.uid || userAuth.uid === ''}}">注册</button>
-      <text wx:else>欢迎！{{userCard.username}}</text>
-      <modal 
-        title="创建您的名片" 
-        hidden="{{!showCreateModal}}" 
-        bindconfirm="confirmUserCreate" 
-        bindcancel="cancelUserCreate"
-      >
-        <view>您的名字：<input id="username" value="{{userCreateCard.username}}" bindinput="onUserCreateInput"/></view>
-        <view>您的电话：<input id="phone" value="{{userCreateCard.phone}}" bindinput="onUserCreateInput"/></view>
-      </modal>
-
-    </block>
-  </view>
+    <view class="user-page">
+      <view class="user-header">
+        <view class="user-title-div">
+          <text class="user-title">{{userCard.username || userInfo.nickName}}</text>
+          <text class="user-motto">{{userCard.motto || '探索者'}}</text>
+        </view>
+        <view class="user-avatar-div"><image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image></view>
+      </view>
+      <view wx:if="{{!userAuth.uid || userAuth.uid === ''}}" class="user-placeholder"/>
+      <view wx:else class="user-content">
+        <view class="user-detail">
+          <view class="user-detail-single">
+            <text class="user-detail-label">性别</text>
+            <text wx:if="{{!isEditingDetail}}" class="user-detail-text">{{userCard.gender}}</text>
+            <input wx:else value="{{userCard.gender}}" id="gender" bindinput="onDetailEditInput"/>
+          </view>
+          <view class="user-detail-single">
+            <text class="user-detail-label">城市</text>
+            <text wx:if="{{!isEditingDetail}}" class="user-detail-text">{{userCard.city}}</text>
+            <input wx:else value="{{userCard.city}}" id="city" bindinput="onDetailEditInput"/>
+          </view>
+          <view class="user-detail-single">
+            <text class="user-detail-label">电话</text>
+            <text wx:if="{{!isEditingDetail}}" class="user-detail-text">{{userCard.phone}}</text>
+            <input wx:else value="{{userCard.phone}}" id="phone" bindinput="onDetailEditInput"/>
+          </view>
+          <view class="user-detail-single">
+            <text class="user-detail-label">邮箱</text>
+            <text wx:if="{{!isEditingDetail}}" class="user-detail-text">{{userCard.email}}</text>
+            <input wx:else value="{{userCard.email}}" id="email" bindinput="onDetailEditInput"/>
+          </view>
+          <button wx:if="{{!isEditingDetail}}" class="user-btn edit-btn" bindtap="startEditDetail">编辑</button>
+          <view wx:else>
+            <button class="user-btn save-btn" bindtap="confirmEditDetail">保存</button>
+            <button class="user-btn cancel-btn" bindtap="cancelEditDetail">取消</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
 </view>

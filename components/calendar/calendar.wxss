@@ -25,7 +25,7 @@
 }
 #calendar-title-text {
 	width: 100%; 
-	text-shadow: 1px 1px 10px rgb(82, 82, 82);
+	text-shadow: 1px 1px 10px rgb(59, 59, 59);
 }
 .calendar-btn{
 	height: 60px;

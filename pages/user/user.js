@@ -6,14 +6,15 @@ const user = new UserController;
 
 Page({
   data: {
-    motto: '点击头像进入活动列表',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     userAuth: app.globalData.userAuth,
     showCreateModal: false,
     userCreateCard: {},
-    userCard: {}
+    userCard: {},
+    editDetailCard: {},
+    isEditingDetail: false,
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
@@ -28,7 +29,7 @@ Page({
           if(res.code !== 200) {
             console.log(res);
           } else {
-            console.log(res);
+            // console.log(res);
             app.globalData.userAuth = { sid: sid, uid: res.data.uid };
             self.setData({
               userAuth: app.globalData.userAuth,
@@ -106,12 +107,52 @@ Page({
   getUserInfo: function(e) {
     console.log(e);
     if(e.detail.errMsg === "getUserInfo:ok"){
-      app.globalData.userInfo = e.detail.userInfo
+      app.globalData.userInfo = e.detail.userInfo;
       this.setData({
-        userInfo: e.detail.userInfo,
+        userInfo: app.globalData.userInfo,
         hasUserInfo: true
       });
-      console.log(this.data.userAuth)
+
+      const sid = app.globalData.userAuth.sid;
+      const setUid = (res) => {
+        if(res.code !== 200) {
+          console.log(res);
+        } else {
+          // console.log(res);
+          app.globalData.userAuth = { sid: sid, uid: res.data.uid };
+          this.setData({
+            userAuth: app.globalData.userAuth,
+            userCard: { username: res.data.username, phone: res.data.phone },
+          });
+        }
+      };
+      user.findCurrentUser(sid, setUid);
+
+      console.log(this.data)
     };
   },
+  cancelEditDetail: function(){
+    this.setData({
+      isEditingDetail: false,
+      editDetailCard: {}
+    })
+  },
+  startEditDetail: function() {
+    this.setData({
+      isEditingDetail: true
+    })
+  },
+  onDetailEditInput: function(e){
+    this.setData({
+      [`editDetailCard.${e.currentTarget.id}`]: e.detail.value
+    })
+  },
+  confirmEditDetail: function(){
+    console.log(this.data.editDetailCard);
+    console.log(this.data.userAuth);
+    this.setData({
+      isEditingDetail: false,
+      editDetailCard: {}
+    })
+  }
 })

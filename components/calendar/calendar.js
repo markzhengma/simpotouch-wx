@@ -187,9 +187,7 @@ Component({
         { translateY: '-50px' },
         { translateY: '0px' },
         ], 100, function () {
-          this.clearAnimation('#calendar-title-text', { translateY: true }, function () {
-            console.log("清除了#container上的opacity和rotate属性")
-          })
+          this.clearAnimation('#calendar-title-text', { translateY: true })
       }.bind(this));
 
       return {

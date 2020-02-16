@@ -1,21 +1,97 @@
 /**index.wxss**/
-.userinfo {
+.user-page {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
+.user-create-box view {
+  margin: 10px 0;
+}
+.user-create-box input {
+  background-color: rgb(241, 241, 204);
+  height: 40px;
+  text-align: center;
+}
+
+.user-header {
+  height: 200rpx;
+  width: 750rpx;
+  background-color: rgb(218, 215, 71);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.user-title-div {
+  width: 550rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 40rpx;
+}
+.user-title {
+  margin-bottom: 20rpx;
+  font-size: 50rpx;
+  color: white;
+  line-height: 60rpx;
+}
+.user-motto {
+  font-size: 30rpx;
+  background-color: rgba(216, 191, 216, 0.329);
+  line-height: 40rpx;
+}
+.user-avatar-div {
+  width: 200rpx;
+}
+.user-avatar {
+  width: 80rpx;
+  height: 80rpx;
   margin: 20rpx;
   border-radius: 50%;
+  border: grey solid 8px;
 }
 
-.userinfo-nickname {
-  color: #aaa;
+.user-content {
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx;
 }
-
-.usermotto {
-  margin-top: 200px;
+.user-detail {
+  width: 700rpx;
+  background-color: rgb(103, 113, 151);
+  border-radius: 10rpx;
+  margin-top: 4rpx;
+  margin-bottom: 4rpx;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+.user-detail-single {
+  margin: 20rpx;
+  width: 660rpx;
+  height: 40rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.user-detail-single input{
+  height: 100%;
+  background-color: rgb(241, 241, 204);
+  width: 300rpx;
+  text-align: center;
+  color: grey;
+}
+.user-detail-label {
+  padding: 10rpx;
+}
+.user-detail-text {
+  font-weight: 800;
+  min-width: 200rpx;
+  padding: 10rpx;
+  color: rgb(241, 241, 204);
+}
+.user-btn{
+  margin: 20rpx;
+  width: 660rpx;
 }

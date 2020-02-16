@@ -26,6 +26,7 @@ App({
                 } catch (e) { 
                   console.log('failed to save sid to storage')
                 }
+                console.log('this.globalData.userAuth: ', this.globalData.userAuth);
               }
             }
           })
@@ -34,6 +35,7 @@ App({
     } else {
       console.log('SID IN STORAGE: ' + sid);
       this.globalData.userAuth = { sid: sid, uid: '' };
+      console.log('this.globalData.userAuth: ', this.globalData.userAuth);
     }
     // 获取用户信息
     wx.getSetting({
