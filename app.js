@@ -1,7 +1,8 @@
+const UserController = require('./controllers/user');
+const user = new UserController;
 //app.js
 App({
   onLaunch: function () {
-    // 展示本地存储能力
     const sid = wx.getStorageSync('sid');
     if(!sid) {
       // 登录
@@ -34,8 +35,18 @@ App({
       })
     } else {
       console.log('SID IN STORAGE: ' + sid);
-      this.globalData.userAuth = { sid: sid, uid: '' };
-      console.log('this.globalData.userAuth: ', this.globalData.userAuth);
+      const setUid = (res) => {
+        if(res.code !== 200) {
+          console.log(res);
+          this.globalData.userAuth = { sid: sid, uid: '' };
+          console.log('this.globalData.userAuth: ', this.globalData.userAuth);
+        } else {
+          // console.log(res);
+          this.globalData.userAuth = { sid: sid, uid: res.data.uid };
+          console.log('this.globalData.userAuth: ', this.globalData.userAuth);
+        }
+      };
+      user.findCurrentUser(sid, setUid);
     }
     // 获取用户信息
     wx.getSetting({
@@ -46,7 +57,7 @@ App({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
               this.globalData.userInfo = res.userInfo
-              console.log(res);
+              console.log(this.globalData);
 
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况

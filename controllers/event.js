@@ -10,6 +10,15 @@ class EventController {
       callback
     );
   };
+  createEvent(data, callback) {
+    util.request(
+      'https://api.simpotouch.com/v1/event/single',
+      {},
+      data,
+      'POST',
+      callback
+    );
+  }
 };
 
 module.exports = EventController;

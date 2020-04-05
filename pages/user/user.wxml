@@ -26,7 +26,7 @@
     >
       <text>SimpoTouch 是基于用户们真实信息的社交平台</text>
       <view><text>真实姓名：</text></view>
-      <view><input class="input" id="username" value="{{userInfo.nickName}}" bindinput="onUserCreateInput"/></view>
+      <view><input class="input" id="username" value="{{userCreateCard.username}}" bindinput="onUserCreateInput"/></view>
       <view><text>您的电话：</text></view>
       <view><input class="input" id="phone" value="{{userCreateCard.phone}}" bindinput="onUserCreateInput"/></view>
     </modal>

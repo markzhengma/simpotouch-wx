@@ -15,15 +15,36 @@
   color: white;
   padding: 10rpx;
 }
-.new-event-single input {
+.new-event-single-input {
   height: 50rpx;
   background-color: rgb(241, 241, 204);
   color: grey;
   padding: 10rpx;
 }
-.new-event-single textarea{
+.new-event-single-textarea{
   background-color: rgb(241, 241, 204);
   color: grey;
   width: calc(100% - 20rpx);
   padding: 10rpx;
+}
+
+.tag-group{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tag {
+  margin: 10px;
+  background-color: mediumaquamarine;
+  padding: 5px;
+}
+.del-btn {
+  background-color: grey;
+  height: 22px;
+  width: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
 }

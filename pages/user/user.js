@@ -43,6 +43,7 @@ Page({
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
+        console.log(res)
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
@@ -71,7 +72,10 @@ Page({
     //   userAuth: app.globalData.userAuth
     // })
     this.setData({
-      showCreateModal: true
+      showCreateModal: true,
+      userCreateCard: {
+        username: this.data.userInfo.nickName
+      }
     })
   },
   cancelUserCreate: function(){
@@ -86,6 +90,12 @@ Page({
       if(res.code !== 200){
         console.log('register failed');
         console.log(res);
+        wx.showToast({
+          title: '创建失败',
+          icon: 'none',
+          duration: 1000,
+          mask: true
+        });
       } else {
         this.setData({
           showCreateModal: false,
@@ -95,7 +105,13 @@ Page({
         this.setData({
           userCard: res.data,
           userAuth: app.globalData.userAuth
-        })
+        });
+        wx.showToast({
+          title: '创建成功',
+          icon: 'succes',
+          duration: 1000,
+          mask: true
+        });
       }
     };
     user.createUser(sid, this.data.userCreateCard, updateUserAuth);
@@ -163,6 +179,12 @@ Page({
       if(res.code !== 200){
         console.log('update failed');
         console.log(res);
+        wx.showToast({
+          title: '修改失败',
+          icon: 'none',
+          duration: 1000,
+          mask: true
+        });
       } else {
         this.setData({
           isEditingUser: false,
@@ -172,7 +194,13 @@ Page({
         this.setData({
           userCard: res.data,
         })
-        console.log(res)
+        console.log(res);
+        wx.showToast({
+          title: '修改成功',
+          icon: 'succes',
+          duration: 1000,
+          mask: true
+        });
       }
     };
     user.updateUser(sid, uid, this.data.userEditCard, updateUser);
