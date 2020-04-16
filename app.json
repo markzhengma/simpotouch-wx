@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/calendar/calendar",
     "pages/new/new",
     "pages/user/user"
   ],
@@ -22,6 +23,12 @@
         "iconPath": "images/home.png",
         "pagePath": "pages/index/index",
         "text": "首页"
+      },
+      {
+        "selectedIconPath": "images/home_selected.png",
+        "iconPath": "images/home.png",
+        "pagePath": "pages/calendar/calendar",
+        "text": "日历"
       },
       {
         "selectedIconPath": "images/plus_selected.png",

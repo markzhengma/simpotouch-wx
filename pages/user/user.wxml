@@ -9,7 +9,7 @@
   </button>
   <block wx:else>
     <modal 
-      wx:if="{{!userAuth.uid || userAuth.uid === ''}}"
+      wx:if="{{showRegister}}"
       confirm-text="注册"
       bindconfirm="bindRegisterTap"
       no-cancel="{{true}}"
@@ -39,7 +39,7 @@
         </view>
         <view class="user-avatar-div"><image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image></view>
       </view>
-      <view wx:if="{{!userAuth.uid || userAuth.uid === ''}}" class="user-placeholder"/>
+      <view wx:if="{{showRegister}}" class="user-placeholder"/>
       <view wx:else class="user-content">
         <view class="user-detail">
           <view class="user-detail-single">

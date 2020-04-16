@@ -15,6 +15,7 @@ Page({
     userCard: {},
     userEditCard: {},
     isEditingUser: false,
+    showRegister: false,
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
@@ -27,7 +28,9 @@ Page({
         const sid = app.globalData.userAuth.sid;
         const setUid = (res) => {
           if(res.code !== 200) {
-            console.log(res);
+            console.log(111, res);
+            console.log('sid not valid, logging in again');
+            app.login();
           } else {
             // console.log(res);
             app.globalData.userAuth = { sid: sid, uid: res.data.uid };
@@ -104,7 +107,8 @@ Page({
         app.globalData.userAuth = { sid: sid, uid: res.data.uid };
         this.setData({
           userCard: res.data,
-          userAuth: app.globalData.userAuth
+          userAuth: app.globalData.userAuth,
+          showRegister: false,
         });
         wx.showToast({
           title: '创建成功',
@@ -132,7 +136,11 @@ Page({
       const sid = app.globalData.userAuth.sid;
       const setUid = (res) => {
         if(res.code !== 200) {
+          console.log('did not find matching user info');
           console.log(res);
+          this.setData({
+            showRegister: true
+          })
         } else {
           // console.log(res);
           app.globalData.userAuth = { sid: sid, uid: res.data.uid };

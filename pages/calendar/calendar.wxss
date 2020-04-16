@@ -1,0 +1,8 @@
+/* pages/home.wxss */
+.bg-w {
+  background: rgb(255, 227, 151);
+}
+
+.bg-g {
+  background: #e6f3f9;
+}

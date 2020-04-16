@@ -6,40 +6,15 @@ App({
     const sid = wx.getStorageSync('sid');
     if(!sid) {
       // 登录
-      wx.login({
-        success: res => {
-          // 发送 res.code 到后台换取 openId, sessionKey, unionId
-          wx.request({
-            url: 'https://api.simpotouch.com/v1/account/wxlogin',
-            header: {
-              'content-type': 'application/json',
-              code: res.code 
-            },
-            success: loginRes => {
-              // console.log(data.data)
-              if(loginRes.data.code !== 200){
-                console.log(loginRes.data.data);
-              } else {
-                console.log(loginRes.data.data);
-                try {
-                  wx.setStorageSync('sid', loginRes.data.data.sid);
-                  this.globalData.userAuth = { sid: loginRes.data.data.sid, uid: loginRes.data.data.uid || '' }
-                } catch (e) { 
-                  console.log('failed to save sid to storage')
-                }
-                console.log('this.globalData.userAuth: ', this.globalData.userAuth);
-              }
-            }
-          })
-        }
-      })
+      this.login()
     } else {
       console.log('SID IN STORAGE: ' + sid);
       const setUid = (res) => {
         if(res.code !== 200) {
-          console.log(res);
-          this.globalData.userAuth = { sid: sid, uid: '' };
-          console.log('this.globalData.userAuth: ', this.globalData.userAuth);
+          console.log('getting uid with sid in storage\n' + res);
+          // this.globalData.userAuth = { sid: sid, uid: '' };
+          // console.log('this.globalData.userAuth: ', this.globalData.userAuth);
+          this.login()
         } else {
           // console.log(res);
           this.globalData.userAuth = { sid: sid, uid: res.data.uid };
@@ -73,5 +48,35 @@ App({
   globalData: {
     userInfo: null,
     userAuth: null
+  },
+  login: function() {
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        wx.request({
+          url: 'https://api.simpotouch.com/v1/account/wxlogin',
+          header: {
+            'content-type': 'application/json',
+            code: res.code 
+          },
+          success: loginRes => {
+            // console.log(data.data)
+            if(loginRes.data.code !== 200){
+              console.log(loginRes.data.data);
+            } else {
+              console.log('login succeeded, res data:')
+              console.log(loginRes.data.data);
+              try {
+                wx.setStorageSync('sid', loginRes.data.data.sid);
+                this.globalData.userAuth = { sid: loginRes.data.data.sid, uid: loginRes.data.data.uid || '' }
+              } catch (e) { 
+                console.log('failed to save sid to storage')
+              }
+              console.log('this.globalData.userAuth: ', this.globalData.userAuth);
+            }
+          }
+        })
+      }
+    })
   }
 })
