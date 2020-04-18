@@ -1,0 +1,3 @@
+<view class="announcement">
+  {{ announcement }}
+</view>

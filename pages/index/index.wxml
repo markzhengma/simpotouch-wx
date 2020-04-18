@@ -1,14 +1,11 @@
 <view class="container">
   <view>
-    主页布局
+    <Banner bannerData="{{bannerData}}"/>
   </view>
   <view>
-    头图轮播
+    <Announcement annData="{{annData}}"/>
   </view>
   <view>
-    公告横幅
-  </view>
-  <view>
-    滚动 feed 卡片
+    <EventList eventListData="{{eventListData}}"/>
   </view>
 </view>

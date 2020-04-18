@@ -1,0 +1,6 @@
+.announcement {
+  padding: 4px;
+  background-color: moccasin;
+  color: dimgray;
+  margin-bottom: 20px;
+}

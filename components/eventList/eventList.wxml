@@ -1,0 +1,31 @@
+<view class="event-list">
+  <view wx:for="{{ eventList }}" wx:key="*this">
+    <view class="event-list-item">
+      <view 
+        class="event-list-item-img" 
+        style="background-image: url({{item.img}})"/>
+      <view class="event-list-item-info">
+        <view class="event-list-item-title">
+          {{ item.title }}
+        </view>
+        <view class="event-list-item-row">
+          <view class="event-list-item-user">
+            <view class="event-list-item-avatar" style="background-image: url({{item.avatar}})"/>
+            <view class="event-list-item-username">
+              {{ item.username }}
+            </view>
+          </view>
+        </view>
+        <view class="event-list-item-row">
+          <view class="event-list-item-location">
+            {{ item.location }}
+          </view>
+          <view class="event-list-item-time">
+            {{ item.time }}
+          </view>
+        </view>
+          
+      </view>
+    </view>
+  </view>
+</view>

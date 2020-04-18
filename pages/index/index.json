@@ -1,5 +1,7 @@
 {
   "usingComponents": {
-    "Calendar": "../../components/calendar/calendar"
+    "Banner": "../../components/banner/banner",
+    "EventList": "../../components/eventList/eventList",
+    "Announcement": "../../components/announcement/announcement"
   }
 }
