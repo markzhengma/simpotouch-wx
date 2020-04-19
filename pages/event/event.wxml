@@ -1,0 +1,63 @@
+<view class="event-page">
+  <view class="event-img" style="background-image: url({{ eventData.img }})"/>
+  <view class="event-row">
+    <view class="event-id row-start">
+      活动ID：#{{ eventData.id }}
+    </view>
+  </view>
+  <view class="event-row row-center">
+    <view class="event-title">
+      {{ eventData.title }}
+    </view>
+  </view>
+  <view class="event-row row-end">
+    <view class="event-user">
+      <view class="event-username">
+        {{ eventData.username }}
+      </view>
+      <view class="event-avatar" style="background-image: url({{ eventData.avatar }})"/>
+    </view>
+  </view>
+  <view class="event-row">
+    <view class="event-detail">
+      <view class="event-date-group">
+        <view class="event-date">
+          日期：{{ eventData.date }}
+        </view>
+        <view class="event-time">
+          从 {{ eventData.start_time }} 至 {{ eventData.end_time }}
+        </view>
+      </view>
+      <view class="event-location">
+        地点：{{ eventData.location }}
+      </view>
+    </view>
+  </view>
+  <view class="event-row">
+    <view class="event-attend">
+      参与人数：{{ eventData.curr_attend }} / {{ eventData.total_attend }}
+    </view>
+  </view>
+  <view class="event-row">
+    <view class="event-info">
+      {{ eventData.info }}
+    </view>
+  </view>
+  <view class="event-row">
+    <button 
+      class="event-btn btn-orange" 
+      data-event-Id="{{ eventData.id }}"
+      bind:tap="collectEvent"
+    >
+      收藏
+    </button>
+    <button 
+      class="event-btn btn-green" 
+      data-event-Id="{{ eventData.id }}"
+      bind:tap="signupEvent"
+    >
+      报名
+    </button>
+  </view>
+</view>
+  

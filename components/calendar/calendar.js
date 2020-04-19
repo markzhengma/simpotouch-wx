@@ -14,6 +14,7 @@ Component({
     currentPage: 0,
     prevPage: 0
   },
+  
   ready: function () {
     this.setCurrentMonth();
   },

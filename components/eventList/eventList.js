@@ -1,4 +1,4 @@
-// components/eventList/eventList.js
+const app = getApp();
 Component({
   /**
    * Component properties
@@ -6,6 +6,15 @@ Component({
   properties: {
     eventListData: {
       type: Object
+    }
+  },
+
+  observers: {
+    'eventListData': function(eventListData) {
+      this.setData({
+        eventList: eventListData.list,
+        updateTime: eventListData.update_time
+      })
     }
   },
 
@@ -32,6 +41,12 @@ Component({
         eventList,
         updateTime
       })
+    },
+    selectEvent: function(e) {
+      const id = e.currentTarget.dataset.eventId;
+      console.log(id)
+      app.goToEventPage(id);
+      
     }
   }
 })

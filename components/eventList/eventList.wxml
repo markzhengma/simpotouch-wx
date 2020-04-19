@@ -1,6 +1,9 @@
 <view class="event-list">
   <view wx:for="{{ eventList }}" wx:key="*this">
-    <view class="event-list-item">
+    <view 
+      class="event-list-item" 
+      data-event-Id="{{ item.id }}"
+      bindtap="selectEvent">
       <view 
         class="event-list-item-img" 
         style="background-image: url({{item.img}})"/>

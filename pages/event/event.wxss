@@ -1,0 +1,99 @@
+.event-page {
+  color: rgb(86, 99, 112);
+}
+.event-row {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  align-items: center;
+}
+.row-center {
+  justify-content: center;
+}
+.row-start {
+  justify-content: flex-start;
+}
+.row-end {
+  justify-content: flex-end;
+}
+.event-img {
+  width: calc(100vw - 10px);
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 5px;
+  border-radius: 4px;
+  box-shadow: 1px 0px 10px rgb(82, 82, 82);
+}
+.event-id {
+  margin: 4px;
+  color: lightsteelblue;
+}
+.event-title {
+  font-size: 26px;
+  margin: 4px;
+  text-align: center;
+}
+.event-user {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 20px 10px 10px;
+}
+.event-avatar {
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-left: 14px;
+  border-radius: 50%;
+  box-shadow: 1px 0px 10px rgb(82, 82, 82);
+}
+.event-username {
+  font-size: 12px;
+  color: rgb(131, 131, 131);
+}
+.event-date-group {
+  display: flex;
+  flex-direction: row;
+}
+.event-date {
+  margin-right: 10px;
+  color: white;
+  background-color: rgb(90, 100, 114);
+  padding: 4px;
+}
+.event-time {
+  color: white;
+  background-color: lightsteelblue;
+  padding: 4px;
+}
+.event-location {
+  padding: 4px;
+}
+.event-detail {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+.event-attend {
+  margin: 10px;
+}
+.event-info {
+  margin: 10px 10px 20px 10px;
+}
+.event-btn {
+  height: 30px;
+  width: 100px;
+  color: grey;
+  box-shadow: 1px 1px 20px rgb(138, 138, 138);
+}
+.btn-green {
+  background-color: palegreen;
+}
+.btn-orange {
+  background-color: rgb(255, 189, 163);
+}

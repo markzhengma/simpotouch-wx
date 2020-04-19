@@ -78,5 +78,12 @@ App({
         })
       }
     })
+  },
+
+  goToEventPage: function(id) {
+    this.globalData.currentEventId = id;
+    wx.navigateTo({
+      url: `/pages/event/event?id=${id}`
+    })
   }
 })
