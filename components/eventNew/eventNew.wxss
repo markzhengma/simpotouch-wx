@@ -15,11 +15,27 @@
   color: white;
   padding: 10rpx;
 }
+
+.new-event-single-picker {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 .new-event-single-input {
   height: 50rpx;
   background-color: rgb(241, 241, 204);
   color: grey;
   padding: 10rpx;
+}
+.new-event-single-input-row {
+  height: 50rpx;
+  background-color: rgb(241, 241, 204);
+  color: grey;
+  padding: 10rpx;
+  min-width: 50%;
+  text-align: right;
 }
 .new-event-single-textarea{
   background-color: rgb(241, 241, 204);

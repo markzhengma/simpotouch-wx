@@ -3,14 +3,15 @@
     <view class="calendar-head-sec">
       <view class="calendar-btn" style="background-image: url('../../images/left.png')" bindtap="tapChangeMonth" data-diff="-1"></view>
       <view class="calendar-title">
-        <picker mode="date" value="{{date}}" start="2010-01-01" end="2020-12-31" bindchange="bindPickerDateChange" style="width: 100%">
-          <view id="calendar-title-text">{{ displayMonthData.year }}年 {{displayMonthData.month}}月</view>
-        </picker>
+        <view id="calendar-title-text">{{ displayMonthData.year }}年 {{displayMonthData.month}}月</view>
       </view>
       <view class="calendar-btn" style="background-image: url('../../images/right.png')" bindtap="tapChangeMonth" data-diff="1"></view>
     </view>
     <view class="calendar-head-sec">
-      <view bindtap="tapDirectlyChangeMonth" data-date="{{today}}" class="wide-btn">今天</view>
+      <view bindtap="tapDirectlyChangeMonth" data-date="{{today}}" class="calendar-select-btn">今天</view>
+      <picker mode="date" value="{{date}}" start="2010-01-01" end="2020-12-31" bindchange="bindPickerDateChange" style="width: fit-content">
+        <view class="calendar-select-btn">日历</view>
+      </picker>
     </view>
   </view>
   <swiper class="calendar-swiper" bindchange="changeSwipe" circular="{{true}}" autoplay="{{false}}">

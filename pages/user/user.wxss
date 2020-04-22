@@ -18,7 +18,7 @@
 .user-header {
   height: 200rpx;
   width: 750rpx;
-  background-color: rgb(218, 215, 71);
+  background-color: slategray;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -38,8 +38,9 @@
   line-height: 60rpx;
 }
 .user-motto {
+  color: white;
   font-size: 30rpx;
-  background-color: rgba(216, 191, 216, 0.329);
+  border-bottom: whitesmoke 2px solid;
   line-height: 40rpx;
 }
 .user-avatar-div {

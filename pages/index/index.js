@@ -32,7 +32,6 @@ Page({
    * Called when page reach bottom
    */
   onReachBottom: function () {
-    console.log('bottom!');
     this.pushToEventList();
   },
 
