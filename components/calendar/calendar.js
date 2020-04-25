@@ -2,6 +2,10 @@ const util = require('../../utils/util.js');
 Component({
   //初始默认为当前日期
   properties: {
+    selectedDate: {
+      type: String,
+      default: util.formatDate(new Date())
+    }
   },
 
   // 组件的初始数据
@@ -9,14 +13,28 @@ Component({
     today: '',
     displayMonthData: '',
     weekArr: ['日', '一', '二', '三', '四', '五', '六'],
-    selectedDate: '',
+    // selectedDate: '',
     pages: [0, 1, 2],
     currentPage: 0,
     prevPage: 0
   },
+
+  // observers: {
+  //   'selectedDate': function(selectedDate) {
+  //     const firstDay = this.data.displayMonthData.calendarObj && this.data.displayMonthData.calendarObj[0][0].data;
+  //     const lastDay = this.data.displayMonthData.calendarObj && this.data.displayMonthData.calendarObj[6][5].data;
+  //     if(selectedDate < firstDay) {
+  //       this.changeMonth('-1')
+  //     };
+  //     if(selectedDate > lastDay) {
+  //       this.changeMonth('1')
+  //     }
+  //   }
+  // },
   
   ready: function () {
     this.setCurrentMonth();
+    this.triggerEvent('dateSelected', { selectedDate: this.data.today });
   },
 
   methods: {
@@ -39,18 +57,20 @@ Component({
       this.changeMonth(diff);
     },
     selectDate: function(e) {
-      this.setData({
-        selectedDate: e.currentTarget.dataset.date
-      })
+      // this.setData({
+      //   selectedDate: e.currentTarget.dataset.date
+      // });
+      this.triggerEvent('dateSelected', { selectedDate: e.currentTarget.dataset.date });
     },
     setCurrentMonth: function(){
       let currDate = new Date();
 
       this.setData({
         today: util.formatDate(currDate),
-        selectedDate: util.formatDate(currDate),
+        // selectedDate: util.formatDate(currDate),
         displayMonthData: this.setMonthData(currDate, 0, 0),
       });
+      this.triggerEvent('dateSelected', { selectedDate: util.formatDate(currDate) });
     },
 
     tapChangeMonth: function(e){
@@ -97,8 +117,9 @@ Component({
 
       this.setData({
         displayMonthData: this.setMonthData(displayDate, yearDiff, monthDiff),
-        selectedDate: util.formatDate(newDate)
+        // selectedDate: util.formatDate(newDate)
       });
+      this.triggerEvent('dateSelected', { selectedDate: util.formatDate(newDate) });
     },
 
     setMonthData: function (displayDate, yearDiff, monthDiff) {

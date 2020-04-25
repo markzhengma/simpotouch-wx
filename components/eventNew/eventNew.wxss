@@ -1,23 +1,37 @@
 .new-event-header{
-  font-size: large;
-  margin: 30rpx 0;
+  font-size: 30px;
+  font-weight: 800;
   width: 750rpx;
-  height: 100rpx;
-  text-align: center;
+  height: 200rpx;
+  background-color: lightslategray;
+  color: papayawhip;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .new-event-content {
-  margin: 0 30rpx;
+  /* margin: 0 10rpx; */
 }
 .new-event-single {
+  /* border-radius: 4rpx; */
   height: fit-content;
-  margin: 10rpx;
+  /* margin: 3rpx 0; */
   background-color: lightslategrey;
-  color: white;
-  padding: 10rpx;
+  color: papayawhip;
+  padding: 4rpx;
 }
-
-.new-event-single-picker {
+.new-event-single-label {
+  height: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 14rpx 0;
+}
+.new-event-single-row {
   width: 100%;
+  padding: 0 10rpx;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -25,23 +39,26 @@
 }
 .new-event-single-input {
   height: 50rpx;
-  background-color: rgb(241, 241, 204);
-  color: grey;
-  padding: 10rpx;
+  background-color: papayawhip;
+  color: lightslategray;
+  padding: 10rpx 20rpx;
 }
 .new-event-single-input-row {
   height: 50rpx;
-  background-color: rgb(241, 241, 204);
-  color: grey;
+  /* background-color: papayawhip; */
+  color: papayawhip;
   padding: 10rpx;
+  margin: 0 20rpx;
   min-width: 50%;
   text-align: right;
+  box-sizing: border-box;
+  border-bottom: 1px solid papayawhip;
 }
 .new-event-single-textarea{
-  background-color: rgb(241, 241, 204);
-  color: grey;
-  width: calc(100% - 20rpx);
-  padding: 10rpx;
+  background-color: papayawhip;
+  color: lightslategray;
+  width: calc(100% - 40rpx);
+  padding: 10rpx 20rpx;
 }
 
 .tag-group{
@@ -52,15 +69,38 @@
 }
 .tag {
   margin: 10px;
-  background-color: mediumaquamarine;
+  background-color: papayawhip;
+  color: lightslategray;
   padding: 5px;
+  border-radius: 2px;
 }
 .del-btn {
-  background-color: grey;
+  background-color: lightslategray;
+  border-radius: 2px;
   height: 22px;
   width: 22px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 5px;
+}
+.new-event-btn-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: lightslategray;
+  padding: 10rpx 0;
+}
+
+.create-btn {
+  margin: 10px;
+  background-color: grey;
+  color: papayawhip;
+  box-shadow: 4px 4px 10px rgb(103, 127, 151);
+}
+.clear-btn {
+  margin: 10px;
+  color: lightslategray;
+  background-color: papayawhip;
+  box-shadow: 4px 4px 10px rgb(177, 165, 147);
 }

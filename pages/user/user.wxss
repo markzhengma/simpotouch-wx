@@ -10,7 +10,7 @@
   margin: 10px 0;
 }
 .user-create-box input {
-  background-color: rgb(241, 241, 204);
+  background-color: papayawhip;
   height: 40px;
   text-align: center;
 }
@@ -18,7 +18,7 @@
 .user-header {
   height: 200rpx;
   width: 750rpx;
-  background-color: slategray;
+  background-color: lightslategray;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -34,13 +34,13 @@
 .user-title {
   margin-bottom: 20rpx;
   font-size: 50rpx;
-  color: white;
+  color: papayawhip;
   line-height: 60rpx;
 }
 .user-motto {
-  color: white;
+  color: papayawhip;
   font-size: 30rpx;
-  border-bottom: whitesmoke 2px solid;
+  border-bottom: papayawhip 1px solid;
   line-height: 40rpx;
 }
 .user-avatar-div {
@@ -51,7 +51,7 @@
   height: 80rpx;
   margin: 20rpx;
   border-radius: 50%;
-  border: grey solid 8px;
+  border: papayawhip solid 2px;
 }
 
 .user-content {
@@ -61,11 +61,11 @@
 }
 .user-detail {
   width: 700rpx;
-  background-color: rgb(103, 113, 151);
+  background-color: lightslategray;
   border-radius: 10rpx;
   margin-top: 4rpx;
   margin-bottom: 4rpx;
-  color: white;
+  color: papayawhip;
   display: flex;
   flex-direction: column;
 }
@@ -79,17 +79,17 @@
 }
 .user-detail-single input{
   height: 100%;
-  background-color: rgb(241, 241, 204);
+  background-color: papayawhip;
   width: 400rpx;
   text-align: center;
-  color: grey;
+  color: lightslategray;
 }
 .user-detail-label {
   padding: 10rpx;
 }
 .user-detail-text {
   padding: 10rpx;
-  color: rgb(241, 241, 204);
+  color: papayawhip;
 }
 .user-btn{
   margin: 20rpx;
@@ -107,11 +107,11 @@
   min-width: fit-content;
   margin: 0 10rpx;
   border-radius: 10rpx;
-  color: grey;
-  background-color: rgb(241, 241, 204);
+  color: lightslategray;
+  background-color: papayawhip;
   text-align: center;
 }
 .btn-selected {
-  color: white;
-  background-color: rgb(89, 89, 255);
+  color: papayawhip;
+  background-color: grey;
 }

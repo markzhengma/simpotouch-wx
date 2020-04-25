@@ -45,14 +45,14 @@
   </view>
   <view class="event-row">
     <button 
-      class="event-btn btn-orange" 
+      class="event-btn btn-yellow" 
       data-event-Id="{{ eventData.id }}"
       bind:tap="collectEvent"
     >
       收藏
     </button>
     <button 
-      class="event-btn btn-green" 
+      class="event-btn btn-gray" 
       data-event-Id="{{ eventData.id }}"
       bind:tap="signupEvent"
     >

@@ -88,7 +88,12 @@ Component({
             title: `创建成功`,
             icon: 'success',
             duration: 1000
-          })
+          });
+          this.clearEventInput();
+          setTimeout(
+            app.goToEventPage('001'),
+            1000
+          )
         } else {
           wx.showToast({
             title: `活动创建失败`,
@@ -98,6 +103,18 @@ Component({
         }
       }
       event.createEvent(eventData, createEventCallBack)
+    },
+    clearEventInput: function() {
+      this.setData({
+        title: '',
+        tagArr: [],
+        location: '',
+        date: '',
+        start_time: '',
+        end_time: '',
+        total_attend: '',
+        info: ''
+      })
     }
   }
 })

@@ -88,12 +88,13 @@
 .event-btn {
   height: 30px;
   width: 100px;
-  color: grey;
-  box-shadow: 1px 1px 20px rgb(138, 138, 138);
+  box-shadow: 2px 2px 10px rgb(138, 138, 138);
 }
-.btn-green {
-  background-color: palegreen;
+.btn-gray {
+  background-color: lightslategray;
+  color: papayawhip;
 }
-.btn-orange {
-  background-color: rgb(255, 189, 163);
+.btn-yellow {
+  background-color: papayawhip;
+  color: lightslategray;
 }

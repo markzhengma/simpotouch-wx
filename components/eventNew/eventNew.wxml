@@ -1,18 +1,19 @@
 <view class="container">
   <view class="new-event-header">
-    <text>新建活动</text>
+    <text wx:if="{{title === ''}}">新建活动</text>
+    <text wx:else>{{title}}</text>
   </view>
   <view class="new-event-content">
     <view class="new-event-single">
-      <text class="new-event-single-label">活动标题</text>
+      <view class="new-event-single-label">活动标题</view>
       <input class="new-event-single-input" type="text" value="{{title}}" id="title" bindinput="onNewEventInput"/>
     </view>
     <view class="new-event-single">
-      <text class="new-event-single-label">标签（暂未启用）</text>
+      <view class="new-event-single-label">标签（暂未启用）</view>
       <view class="tag-group">
         <view wx:for="{{tagArr}}" wx:key="unique" class="tag" style="display: flex; flex-direction: row; justify-content: center">
           <view>{{item.title}}</view>
-          <view class="del-btn" bindtap="delTag" data-value="{{item.id}}">x</view>
+          <view class="del-btn" bindtap="delTag" data-value="{{item.id}}"></view>
         </view>
       </view>
       <view class="tag-group">
@@ -23,17 +24,17 @@
       </view>
     </view>
     <view class="new-event-single">
-      <text class="new-event-single-label">活动地点</text>
+      <view class="new-event-single-label">活动地点</view>
       <input class="new-event-single-input" type="text" value="{{location}}" id="location" bindinput="onNewEventInput"/>
     </view>
     <view class="new-event-single">
-      <text class="new-event-single-label">活动详情</text>
+      <view class="new-event-single-label">活动详情</view>
       <textarea class="new-event-single-textarea" value="{{info}}" id="info" bindinput="onNewEventInput"/>
     </view>
     <view class="new-event-single">
       <picker mode="date" value="{{date}}" id="date" bindchange="onTimeChange" style="width: 100%">
-        <view class="new-event-single-picker">
-          <text class="new-event-single-label-row">活动日期</text>
+        <view class="new-event-single-row">
+          <view class="new-event-single-label-row">活动日期</view>
           <view class="new-event-single-input-row">
             {{date}}
           </view>
@@ -42,8 +43,8 @@
     </view>
     <view class="new-event-single">
       <picker mode="time" value="{{start_time}}" id="start_time" bindchange="onTimeChange" style="width: 100%">
-        <view class="new-event-single-picker">
-          <text class="new-event-single-label-row">开始时间</text>
+        <view class="new-event-single-row">
+          <view class="new-event-single-label-row">开始时间</view>
           <view class="new-event-single-input-row">
             {{start_time}}
           </view>
@@ -52,8 +53,8 @@
     </view>
     <view class="new-event-single">
       <picker mode="time" value="{{end_time}}" id="end_time" bindchange="onTimeChange" style="width: 100%">
-        <view class="new-event-single-picker">
-          <text class="new-event-single-label-row">结束时间</text>
+        <view class="new-event-single-row">
+          <view class="new-event-single-label-row">结束时间</view>
           <view  class="new-event-single-input-row">
             {{end_time}}
           </view>
@@ -61,9 +62,14 @@
       </picker>
     </view>
     <view class="new-event-single">
-      <text class="new-event-single-label">人数上限</text>
-      <input class="new-event-single-input" type="number" value="{{total_attend}}" id="total_attend" bindinput="onNewEventInput"/>
+      <view class="new-event-single-row">
+        <view class="new-event-single-label-row">人数上限</view>
+        <input class="new-event-single-input-row" type="number" value="{{total_attend}}" id="total_attend" bindinput="onNewEventInput"/>
+      </view>
     </view>
   </view>
-  <button bindtap="submitNewEvent">新建</button>
+  <view class="new-event-btn-group">
+    <button class="create-btn" bindtap="submitNewEvent">新建</button>
+    <button class="clear-btn" bindtap="clearEventInput">重置</button>
+  </view>
 </view>

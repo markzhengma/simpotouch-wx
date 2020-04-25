@@ -40,13 +40,4 @@
       </swiper-item>
     </block>
   </swiper>
-  <view>
-    <text>
-      今天：{{ today }}
-    </text>
-    <text>
-      选中：{{ selectedDate }}
-    </text>
-  </view>
-
 </view>
