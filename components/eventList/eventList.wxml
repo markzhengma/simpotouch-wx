@@ -1,5 +1,5 @@
 <view class="event-list">
-  <view wx:for="{{ eventList }}" wx:key="*this">
+  <view wx:for="{{ eventList }}" wx:key="unique">
     <view 
       class="event-list-item" 
       data-event-Id="{{ item.id }}"

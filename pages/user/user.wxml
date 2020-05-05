@@ -1,12 +1,18 @@
 <!--index.wxml-->
 <view class="container">
-  <button 
-    wx:if="{{!hasUserInfo && canIUse}}" 
-    open-type="getUserInfo" 
-    bindgetuserinfo="getUserInfo"
-  > 
-    登录 
-  </button>
+  <view 
+    wx:if="{{!hasUserInfo && canIUse}}"
+    class="login-page"
+  >
+    <view class="login-text">开始你的轻触之旅！</view>
+    <button 
+      class="login-btn"
+      open-type="getUserInfo" 
+      bindgetuserinfo="getUserInfo"
+    > 
+      登录 
+    </button>
+  </view>
   <block wx:else>
     <modal 
       wx:if="{{showRegister}}"
@@ -14,8 +20,7 @@
       bindconfirm="bindRegisterTap"
       no-cancel="{{true}}"
     >
-      <view><text>嘿，{{userInfo.nickName}}！欢迎来到 SimpoTouch！</text></view>
-      <view><text>注册一个账号来开始你的轻触之旅吧！</text></view>
+      <view><text>请注册一个账号吧！</text></view>
     </modal>
     <modal 
       class="user-create-box"
@@ -67,10 +72,10 @@
             <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.email}}</text>
             <input wx:else value="{{userCard.email}}" id="email" bindinput="onUserEditInput"/>
           </view>
-          <button wx:if="{{!isEditingUser}}" class="user-btn edit-btn" bindtap="startUserEdit">编辑</button>
+          <button wx:if="{{!isEditingUser}}" class="user-btn gray-btn" bindtap="startUserEdit">编辑</button>
           <view wx:else>
-            <button class="user-btn save-btn" bindtap="confirmUserEdit">保存</button>
-            <button class="user-btn cancel-btn" bindtap="cancelUserEdit">取消</button>
+            <button class="user-btn gray-btn" bindtap="confirmUserEdit">保存</button>
+            <button class="user-btn yellow-btn" bindtap="cancelUserEdit">取消</button>
           </view>
         </view>
       </view>

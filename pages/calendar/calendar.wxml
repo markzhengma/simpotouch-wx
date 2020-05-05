@@ -21,6 +21,7 @@
     <view class="calendar-eventlist-body">
       <view 
         wx:for="{{eventData}}" 
+        wx:key="unique"
         class="calendar-eventlist-single"
         data-event-Id="{{item.id}}"
         bind:tap="selectEvent"

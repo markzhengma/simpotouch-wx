@@ -19,28 +19,13 @@ Page({
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
-      const self = this;
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       });
       if(app.globalData.userAuth.sid){
         const sid = app.globalData.userAuth.sid;
-        const setUid = (res) => {
-          if(res.code !== 200) {
-            console.log(111, res);
-            console.log('sid not valid, logging in again');
-            app.login();
-          } else {
-            // console.log(res);
-            app.globalData.userAuth = { sid: sid, uid: res.data.uid };
-            self.setData({
-              userAuth: app.globalData.userAuth,
-              userCard: res.data
-            });
-          }
-        };
-        user.findCurrentUser(sid, setUid);
+        this.getCurrentUser(sid);
       }
     } else if (this.data.canIUse){
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -50,7 +35,11 @@ Page({
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
-        })
+        });
+        if(app.globalData.userAuth.sid){
+          const sid = app.globalData.userAuth.sid;
+          this.getCurrentUser(sid);
+        }
       }
     } else {
       // 在没有 open-type=getUserInfo 版本的兼容处理
@@ -60,13 +49,17 @@ Page({
           this.setData({
             userInfo: res.userInfo,
             hasUserInfo: true
-          })
+          });
+          if(app.globalData.userAuth.sid){
+            const sid = app.globalData.userAuth.sid;
+            this.getCurrentUser(sid);
+          }
         }
       })
     }
   },
   onReady: function(){
-    console.log(app.globalData.userAuth)
+    
   },
   //事件处理函数
   bindRegisterTap: function() {
@@ -125,6 +118,36 @@ Page({
       [`userCreateCard.${event.currentTarget.id}`]: event.detail.value
     });
   },
+  getCurrentUser: function(sid) {
+    const setUid = (res) => {
+      if(res.code !== 200) {
+        console.log(res);
+        console.log('sid not valid, logging in again');
+
+        const callBack = (userAuth) => {
+          const sid = userAuth.sid;
+          console.log(444, sid);
+          this.getCurrentUser(sid);
+        }
+        app.login(callBack);
+      } else if(res.data && res.data.is_new) {
+        console.log('this is a new user');
+        console.log(res);
+        this.setData({
+          showRegister: true
+        })
+      } else {
+        app.globalData.userAuth = { sid: sid, uid: res.data.uid };
+        app.globalData.userCard = res.data;
+        this.setData({
+          userAuth: { sid: sid, uid: res.data.uid },
+          userCard: res.data,
+          showRegister: false
+        });
+      }
+    };
+    user.findCurrentUser(sid, setUid);
+  },
   getUserInfo: function(e) {
     if(e.detail.errMsg === "getUserInfo:ok"){
       app.globalData.userInfo = e.detail.userInfo;
@@ -134,25 +157,7 @@ Page({
       });
 
       const sid = app.globalData.userAuth.sid;
-      const setUid = (res) => {
-        if(res.code !== 200) {
-          console.log('did not find matching user info');
-          console.log(res);
-          this.setData({
-            showRegister: true
-          })
-        } else {
-          // console.log(res);
-          app.globalData.userAuth = { sid: sid, uid: res.data.uid };
-          this.setData({
-            userAuth: app.globalData.userAuth,
-            userCard: res.data,
-          });
-        }
-      };
-      user.findCurrentUser(sid, setUid);
-
-      console.log(this.data)
+      this.getCurrentUser(sid);
     };
   },
   cancelUserEdit: function(){

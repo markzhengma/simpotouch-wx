@@ -1,4 +1,21 @@
-/**index.wxss**/
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: papayawhip;
+}
+.login-text {
+  font-size: 24px;
+  font-weight: 800;
+  color: lightslategray;
+  margin-bottom: 20px;
+}
+.login-btn {
+  background-color: lightslategray;
+  color: papayawhip;
+}
 .user-page {
   display: flex;
   flex-direction: column;
@@ -68,6 +85,7 @@
   color: papayawhip;
   display: flex;
   flex-direction: column;
+  box-shadow: 4px 4px 10px rgb(82, 82, 82);
 }
 .user-detail-single {
   margin: 20rpx;
@@ -93,7 +111,16 @@
 }
 .user-btn{
   margin: 20rpx;
-  width: 660rpx;
+  width: 600rpx;
+  box-shadow: 4px 4px 10px rgb(82, 82, 82);
+}
+.gray-btn {
+  color: papayawhip;
+  background-color: grey;
+}
+.yellow-btn {
+  background-color: papayawhip;
+  color: lightslategray;
 }
 .gender-btn-group {
   height: 60rpx;

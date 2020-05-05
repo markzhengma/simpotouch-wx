@@ -12,8 +12,8 @@ Component({
   observers: {
     'eventListData': function(eventListData) {
       this.setData({
-        eventList: eventListData.list,
-        updateTime: eventListData.update_time
+        eventList: eventListData.list || [],
+        updateTime: eventListData.update_time || ''
       })
     }
   },

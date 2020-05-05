@@ -6,7 +6,7 @@
         interval="{{interval}}" 
         duration="{{duration}}"
         circular="{{isCircular}}">
-        <block wx:for="{{bannerList}}" wx:key="*this">
+        <block wx:for="{{bannerList}}" wx:key="unique">
           <swiper-item>
             <view class="banner-item" style="background-image: url({{item.img}})"></view>
           </swiper-item>

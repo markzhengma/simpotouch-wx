@@ -29,9 +29,17 @@
   align-items: center;
   padding: 14rpx 0;
 }
+.new-event-single-label-row {
+  height: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10rpx;
+}
 .new-event-single-row {
   width: 100%;
-  padding: 0 10rpx;
+  /* padding: 0 10rpx; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
