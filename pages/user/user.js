@@ -23,7 +23,7 @@ Page({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       });
-      if(app.globalData.userAuth.sid){
+      if(app.globalData.userAuth){
         const sid = app.globalData.userAuth.sid;
         this.getCurrentUser(sid);
       }
@@ -36,7 +36,7 @@ Page({
           userInfo: res.userInfo,
           hasUserInfo: true
         });
-        if(app.globalData.userAuth.sid){
+        if(app.globalData.userAuth){
           const sid = app.globalData.userAuth.sid;
           this.getCurrentUser(sid);
         }
@@ -50,7 +50,7 @@ Page({
             userInfo: res.userInfo,
             hasUserInfo: true
           });
-          if(app.globalData.userAuth.sid){
+          if(app.globalData.userAuth){
             const sid = app.globalData.userAuth.sid;
             this.getCurrentUser(sid);
           }
@@ -119,15 +119,19 @@ Page({
     });
   },
   getCurrentUser: function(sid) {
+    const encryptedData = wx.getStorageSync('encryptedData');
+    const iv = wx.getStorageSync('iv');
+    const signature =wx.getStorageSync('signature');
+
     const setUid = (res) => {
+      console.log(res)
       if(res.code !== 200) {
         console.log(res);
         console.log('sid not valid, logging in again');
 
         const callBack = (userAuth) => {
           const sid = userAuth.sid;
-          console.log(444, sid);
-          this.getCurrentUser(sid);
+          this.getCurrentUserAttempt(sid);
         }
         app.login(callBack);
       } else if(res.data && res.data.is_new) {
@@ -146,7 +150,34 @@ Page({
         });
       }
     };
-    user.findCurrentUser(sid, setUid);
+    user.findCurrentUser(sid, encryptedData, iv, signature, setUid);
+  },
+  getCurrentUserAttempt: function(sid) {
+    const encryptedData = wx.getStorageSync('encryptedData');
+    const iv = wx.getStorageSync('iv');
+    const signature =wx.getStorageSync('signature');
+
+    const setUid = (res) => {
+      console.log(res);
+
+      if(res.data && res.data.is_new) {
+        console.log('this is a new user');
+        console.log(res);
+        this.setData({
+          showRegister: true
+        })
+      } else {
+        app.globalData.userAuth = { sid: sid, uid: res.data.uid };
+        app.globalData.userCard = res.data;
+        this.setData({
+          userAuth: { sid: sid, uid: res.data.uid },
+          userCard: res.data,
+          showRegister: false
+        });
+      }
+    };
+
+    user.findCurrentUser(sid, encryptedData, iv, signature, setUid);
   },
   getUserInfo: function(e) {
     if(e.detail.errMsg === "getUserInfo:ok"){
@@ -156,7 +187,7 @@ Page({
         hasUserInfo: true
       });
 
-      const sid = app.globalData.userAuth.sid;
+      const sid = app.globalData.userAuth && app.globalData.userAuth.sid;
       this.getCurrentUser(sid);
     };
   },

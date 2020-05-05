@@ -27,11 +27,14 @@ class UserController {
       callback
     );
   };
-  findCurrentUser(sid, callback){
+  findCurrentUser(sid, encrypted_data, iv, signature, callback){
     util.request(
       'https://api.simpotouch.com/v1/user/self',
       {
-        sid: sid
+        sid,
+        encrypted_data,
+        iv,
+        signature
       },
       {},
       'GET',
