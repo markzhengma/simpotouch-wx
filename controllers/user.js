@@ -1,13 +1,34 @@
 const util = require('../utils/util.js');
 
 class UserController {
-  createUser(sid, data, callback){
+  loginWithJSCode(code, callback) {
     util.request(
-      'https://api.simpotouch.com/v1/user/single',
+      'http://localhost:7001/v1/user/wxlogin',
       {
-        sid: sid
+        'content-type': 'application/json',
+        code
       },
+      {},
+      'GET',
+      callback
+    )
+  };
+  initUserWithUserWxInfo(data, callback){
+    util.request(
+      'http://localhost:7001/v1/user/init',
+      {},
+      data,
+      'POST',
+      callback
+    );
+  };
+  createUser(uid, sid, data, callback){
+    util.request(
+      'http://localhost:7001/v1/user/single',
+      {},
       {
+        uid,
+        sid,
         username: data.username,
         phone: data.phone
       },
@@ -17,7 +38,7 @@ class UserController {
   };
   updateUser(sid, uid, data, callback){
     util.request(
-      'https://api.simpotouch.com/v1/user/single',
+      'http://localhost:7001/v1/user/single',
       {
         sid: sid,
         uid: uid
@@ -27,16 +48,14 @@ class UserController {
       callback
     );
   };
-  findCurrentUser(sid, encrypted_data, iv, signature, callback){
+  findCurrentUser(uid, sid, callback){
     util.request(
-      'https://api.simpotouch.com/v1/user/self',
-      {
-        sid,
-        encrypted_data,
-        iv,
-        signature
-      },
+      'http://localhost:7001/v1/user/self',
       {},
+      {
+        uid,
+        sid
+      },
       'GET',
       callback
     );

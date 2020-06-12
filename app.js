@@ -3,120 +3,198 @@ const user = new UserController;
 //app.js
 App({
   onLaunch: function () {
+    const uid = wx.getStorageSync('uid');
     const sid = wx.getStorageSync('sid');
     const encryptedData = wx.getStorageSync('encryptedData');
     const iv = wx.getStorageSync('iv');
     const signature =wx.getStorageSync('signature');
-    if(!sid || !encryptedData || !iv || !signature) {
+    if(!uid || !sid) {
       // 登录
-      this.login()
+      this.login();
+    } else if (!encryptedData || !iv || !signature) {
+      this.getSetting();
     } else {
+      console.log('UID IN STORAGE: ' + uid);
       console.log('SID IN STORAGE: ' + sid);
       console.log('ENCRYPTEDDATA IN STORAGE: ' + encryptedData);
       console.log('IV IN STORAGE: ' + iv);
       console.log('SIGNATURE IN STORAGE: ' + signature);
-      this.getCurrentUser(sid, encryptedData, iv, signature);
+      this.getCurrentUser(uid, sid);
     }
-    this.getSetting();
   },
-  globalData: {
-    userInfo: null,
-    userAuth: null
+  data: {
+    userWxInfo: null,
+    userAppInfo: null
   },
-  login: function(callback) {
-    console.log('logging in')
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        wx.request({
-          url: 'https://api.simpotouch.com/v1/account/wxlogin',
-          header: {
-            'content-type': 'application/json',
-            code: res.code 
-          },
-          success: loginRes => {
-            // console.log(data.data)
-            if(loginRes.data.code !== 200){
-              console.log(loginRes.data.data);
-            } else {
-              console.log('login succeeded, res data:')
-              console.log(loginRes.data.data);
-              const getUserAttempt = () => {
-                try {
-                  wx.setStorageSync('sid', loginRes.data.data.sid);
-                  this.globalData.userAuth = { sid: loginRes.data.data.sid, uid: loginRes.data.data.uid || '', is_new: loginRes.data.data.is_new };
-                  if(callback) {
-                    callback(this.globalData.userAuth);
-                  }
-                } catch (e) { 
-                  console.log('failed to save sid to storage')
+  setAppData: function(field, value) {
+    console.log('set global data ' + field)
+    this.data[field] = value;
+  },
+  login: function() {
+    console.log('logging in');
+    const self = this;
+    return new Promise(resolve => {
+      wx.login({
+        success(res) {
+          const callback = (res) => {
+            self.loginCallBack(res)
+              .then(data => {
+                resolve(data);
+              })
+              .catch(err => {
+                throw err;
+              })
+          };
+
+          user.loginWithJSCode(res.code, callback);
+        }
+      })
+    })
+  },
+
+  // work on login res data 
+  loginCallBack: function(loginRes){
+    console.log('login call back')
+    return new Promise(resolve => {
+      switch (loginRes.code) {
+        case 200:
+          const isNew = loginRes.data.is_new;
+  
+          const sid = loginRes.data.sid;
+          const timestamp = loginRes.data.timestamp;
+  
+          this.getUserWxInfo()
+            .then(userWxInfoRes => {
+              if(userWxInfoRes) {
+                const signature = userWxInfoRes.signature;
+                const encryptedData = userWxInfoRes.encryptedData;
+                const iv = userWxInfoRes.iv;
+        
+                wx.setStorageSync('signature', signature);
+                wx.setStorageSync('encryptedData', encryptedData);
+                wx.setStorageSync('iv', iv);
+    
+                console.log('got user info');
+                
+                switch (isNew){
+                  case true:
+                    console.log('new user yeah');
+                    this.initUserWithUserWxInfo(sid, timestamp, encryptedData, iv)
+                      .then(userData => {
+                        if(userData.code !== 200) {
+                          console.log('get user data error')
+                          console.log(userData);
+                          resolve(userData);
+                        } else {
+                          const userAppInfo = userData.data;
+                          const uid = userAppInfo.uid;
+  
+                          resolve({ uid, sid })
+    
+                          wx.setStorageSync('uid', uid);
+                          wx.setStorageSync('sid', sid);
+    
+                          this.setAppData('userAppInfo', userAppInfo);
+                        }
+                      })
+                    break;
+                  default: 
+                    console.log('not a new user');
+                    console.log(loginRes);
+                    const uid = loginRes.data.uid;
+                    wx.setStorageSync('uid', uid);
+                    wx.setStorageSync('sid', sid);
+  
+                    resolve({ uid, sid })
+                    break;
                 }
               }
-              this.getSetting(getUserAttempt);
-              console.log('this.globalData.userAuth: ', this.globalData.userAuth);
-            }
-          }
-        })
+            })
+          break;
+        default:
+          console.log('login failed');
+          console.log(loginRes);
+          resolve(loginRes)
+          break;
       }
     })
   },
 
-  getSetting: function(getUserAttempt) {
+  // new user, send wx user data to server
+  // init new user with wx info and 
+  initUserWithUserWxInfo: function(sid, timestamp, encryptedData, iv){
+    console.log('initiate user with wx user info')
+    return new Promise(resolve => {
+      const callback = (data) => {
+        resolve(data)
+      };
+
+      const data = {
+        sid,
+        timestamp,
+        encryptedData,
+        iv
+      }
+      user.initUserWithUserWxInfo(data, callback);
+    })
+  },
+
+  // wx get user info
+  getUserWxInfo() {
+    console.log('get wx user info');
+    let self = this;
+    return new Promise(resolve => {
+      wx.getUserInfo({
+        success(res) {
+          self.setAppData('userWxInfo', res.userInfo)
+          resolve(res);
+        }
+      })
+    })
+  },
+
+  getSetting: function() {
+    console.log('get setting')
     // 获取用户信息
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              wx.setStorageSync('signature', res.signature);
-              wx.setStorageSync('encryptedData', res.encryptedData);
-              wx.setStorageSync('iv', res.iv);
-              this.globalData.userInfo = res.userInfo;
-              console.log(this.globalData);
-
-              if(getUserAttempt) {
-                getUserAttempt();
-              }
-
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
-              }
-            }
+          this.getUserWxInfo()
+          .then(userWxInfoRes => {
+            const signature = userWxInfoRes.signature;
+            const encryptedData = userWxInfoRes.encryptedData;
+            const iv = userWxInfoRes.iv;
+    
+            wx.setStorageSync('signature', signature);
+            wx.setStorageSync('encryptedData', encryptedData);
+            wx.setStorageSync('iv', iv);
           })
         }
       }
     })
   },
 
-  getCurrentUser: function(sid, encryptedData, iv, signature) {
-    const setUid = (res) => {
-      if(res.code !== 200) {
-        console.log(res);
-        console.log('sid not valid, logging in again');
-
-        const callBack = (userAuth) => {
-          const sid = userAuth.sid;
-          console.log(333, sid);
-          this.getCurrentUser(sid, encryptedData, iv, signature);
+  getCurrentUser: function(uid, sid) {
+    const self = this;
+    return new Promise(resolve => {
+      console.log('get current user')
+      const setUserInfo = (res) => {
+        if(!res || res.code !== 200) {
+          console.log('get current user failed');
+          console.log(res);
+        } else {
+          self.setAppData('userAppInfo', res.data);
+          resolve(self.data)
         }
-        this.login(callBack);
-      } else if(res.data && res.data.is_new) {
-        console.log('this is a new user');
-        console.log(res);
-      } else {
-        this.globalData.userAuth = { sid: sid, uid: res.data.uid };
-        this.globalData.userCard = res.data;
-      }
-    };
-    user.findCurrentUser(sid, encryptedData, iv, signature, setUid);
+        self.getUserWxInfo();
+      };
+      user.findCurrentUser(uid, sid, setUserInfo);
+    })
   },
 
   goToEventPage: function(id) {
-    this.globalData.currentEventId = id;
+    this.setAppData('currentEventId', id);
     wx.navigateTo({
       url: `/pages/event/event?id=${id}`
     })

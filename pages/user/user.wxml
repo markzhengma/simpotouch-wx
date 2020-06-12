@@ -15,7 +15,7 @@
   </view>
   <block wx:else>
     <modal 
-      wx:if="{{showRegister}}"
+      wx:if="{{isNew}}"
       confirm-text="注册"
       bindconfirm="bindRegisterTap"
       no-cancel="{{true}}"
@@ -25,52 +25,51 @@
     <modal 
       class="user-create-box"
       title="您的轻触名片" 
-      hidden="{{!showCreateModal}}" 
+      hidden="{{!isCreating}}" 
       bindconfirm="confirmUserCreate" 
       bindcancel="cancelUserCreate"
     >
       <text>SimpoTouch 是基于用户们真实信息的社交平台</text>
       <view><text>真实姓名：</text></view>
-      <view><input class="input" id="username" value="{{userCreateCard.username}}" bindinput="onUserCreateInput"/></view>
+      <view><input class="input" id="username" value="{{userCreateData.username}}" bindinput="onUserCreateInput"/></view>
       <view><text>您的电话：</text></view>
-      <view><input class="input" id="phone" value="{{userCreateCard.phone}}" bindinput="onUserCreateInput"/></view>
+      <view><input class="input" id="phone" value="{{userCreateData.phone}}" bindinput="onUserCreateInput"/></view>
     </modal>
 
     <view class="user-page">
       <view class="user-header">
         <view class="user-title-div">
-          <text class="user-title">{{userCard.username || userInfo.nickName}}</text>
-          <text class="user-motto">{{userCard.motto || '我的简介'}}</text>
+          <text class="user-title">{{userAppInfo.username || userWxInfo.nickName}}</text>
+          <text class="user-motto">{{userAppInfo.motto || '我的简介'}}</text>
         </view>
-        <view class="user-avatar-div"><image class="user-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image></view>
+        <view class="user-avatar-div"><image class="user-avatar" src="{{userWxInfo.avatarUrl}}" mode="cover"></image></view>
       </view>
-      <view wx:if="{{showRegister}}" class="user-placeholder"/>
+      <view wx:if="{{isNew}}" class="user-placeholder"/>
       <view wx:else class="user-content">
         <view class="user-detail">
           <view class="user-detail-single">
             <text class="user-detail-label">性别</text>
-            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.gender}}</text>
-            <!-- <input wx:else value="{{userCard.gender}}" id="gender" bindinput="onUserEditInput"/> -->
+            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userAppInfo.gender}}</text>
             <view wx:else class="gender-btn-group">
-              <view class="gender-btn {{userEditCard.gender === '男' ? 'btn-selected' : ''}}" bindtap="changeGender" data-gender="男">男</view>
-              <view class="gender-btn {{userEditCard.gender === '女' ? 'btn-selected' : ''}}" bindtap="changeGender" data-gender="女">女</view>
-              <view class="gender-btn {{userEditCard.gender === '保密' ? 'btn-selected' : ''}}" bindtap="changeGender" data-gender="保密">保密</view>
+              <view class="gender-btn {{userEditData.gender === '男' ? 'btn-selected' : ''}}" bindtap="changeGender" data-gender="男">男</view>
+              <view class="gender-btn {{userEditData.gender === '女' ? 'btn-selected' : ''}}" bindtap="changeGender" data-gender="女">女</view>
+              <view class="gender-btn {{userEditData.gender === '保密' ? 'btn-selected' : ''}}" bindtap="changeGender" data-gender="保密">保密</view>
             </view>
           </view>
           <view class="user-detail-single">
             <text class="user-detail-label">城市</text>
-            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.city}}</text>
-            <input wx:else value="{{userCard.city}}" id="city" bindinput="onUserEditInput"/>
+            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userAppInfo.city}}</text>
+            <input wx:else value="{{userAppInfo.city}}" id="city" bindinput="onUserEditInput"/>
           </view>
           <view class="user-detail-single">
             <text class="user-detail-label">电话</text>
-            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.phone}}</text>
-            <input wx:else value="{{userCard.phone}}" id="phone" bindinput="onUserEditInput"/>
+            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userAppInfo.phone}}</text>
+            <input wx:else value="{{userAppInfo.phone}}" id="phone" bindinput="onUserEditInput"/>
           </view>
           <view class="user-detail-single">
             <text class="user-detail-label">邮箱</text>
-            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userCard.email}}</text>
-            <input wx:else value="{{userCard.email}}" id="email" bindinput="onUserEditInput"/>
+            <text wx:if="{{!isEditingUser}}" class="user-detail-text">{{userAppInfo.email}}</text>
+            <input wx:else value="{{userAppInfo.email}}" id="email" bindinput="onUserEditInput"/>
           </view>
           <button wx:if="{{!isEditingUser}}" class="user-btn gray-btn" bindtap="startUserEdit">编辑</button>
           <view wx:else>

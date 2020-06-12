@@ -31,7 +31,6 @@ Component({
   methods: {
     setBanner: function() {
       const bannerList = this.data.bannerData.list;
-      console.log(bannerList)
       this.setData({
         bannerList
       })

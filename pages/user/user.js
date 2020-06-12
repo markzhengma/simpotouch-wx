@@ -6,83 +6,116 @@ const user = new UserController;
 
 Page({
   data: {
-    userInfo: {},
+    userWxInfo: null,
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    userAuth: app.globalData.userAuth,
-    showCreateModal: false,
-    userCreateCard: {},
-    userCard: {},
-    userEditCard: {},
+    isCreating: false,
+    userCreateData: {},
+    userAppInfo: {},
+    userEditData: {},
     isEditingUser: false,
-    showRegister: false,
+    isNew: false,
   },
-  onLoad: function () {
-    if (app.globalData.userInfo) {
+  onLoad: function() {
+    console.log(app.data)
+    this.setUserInfo();
+  },
+  setUserInfo: function(){
+    this.setData({
+      userWxInfo: app.data.userWxInfo,
+      userAppInfo: app.data.userAppInfo,
+      hasUserInfo: app.data.userWxInfo ? true : false,
+      isNew: app.data.userAppInfo && app.data.userAppInfo.is_new ? true : false
+    })
+  },
+  getUserInfo: function(e) {
+    if(e.detail.errMsg === "getUserInfo:ok"){
+      app.login()
+        .then(res => {
+          if(res.uid && res.sid) {
+            app.getCurrentUser(res.uid, res.sid)
+              .then(() => {
+                this.setUserInfo()
+              })
+          } else {
+            console.log('get current user failed');
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          throw err;
+        })
       this.setData({
-        userInfo: app.globalData.userInfo,
         hasUserInfo: true
       });
-      if(app.globalData.userAuth){
-        const sid = app.globalData.userAuth.sid;
-        this.getCurrentUser(sid);
-      }
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        console.log(res)
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        });
-        if(app.globalData.userAuth){
-          const sid = app.globalData.userAuth.sid;
-          this.getCurrentUser(sid);
-        }
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          });
-          if(app.globalData.userAuth){
-            const sid = app.globalData.userAuth.sid;
-            this.getCurrentUser(sid);
-          }
-        }
-      })
-    }
+    };
   },
-  onReady: function(){
+  // onLoad: function () {
+  //   // watch this value
+  //   this.setData({
+  //     isNew: app.data.userAppInfo ? app.data.userAppInfo.is_new : false
+  //   })
+  //   if (app.data.userInfo) {
+  //     this.setData({
+  //       userInfo: app.data.userInfo,
+  //       hasUserInfo: true
+  //     });
+  //     if(app.data.userAuth){
+  //       const sid = app.data.userAuth.sid;
+  //       this.getCurrentUser(sid);
+  //     }
+  //   } else if (this.data.canIUse){
+  //     // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+  //     // 所以此处加入 callback 以防止这种情况
+  //     app.userInfoReadyCallback = res => {
+  //       console.log(res)
+  //       this.setData({
+  //         userInfo: res.userInfo,
+  //         hasUserInfo: true
+  //       });
+  //       if(app.data.userAuth){
+  //         const sid = app.data.userAuth.sid;
+  //         this.getCurrentUser(sid);
+  //       }
+  //     }
+  //   } else {
+  //     // 在没有 open-type=getUserInfo 版本的兼容处理
+  //     wx.getUserInfo({
+  //       success: res => {
+  //         app.data.userInfo = res.userInfo
+  //         this.setData({
+  //           userInfo: res.userInfo,
+  //           hasUserInfo: true
+  //         });
+  //         if(app.data.userAuth){
+  //           const sid = app.data.userAuth.sid;
+  //           this.getCurrentUser(sid);
+  //         }
+  //       }
+  //     })
+  //   }
+  // },
+  // onReady: function(){
     
-  },
+  // },
   //事件处理函数
   bindRegisterTap: function() {
-    // app.globalData.userAuth = { sid: this.data.userAuth.sid, uid: '123'};
-    // this.setData({
-    //   userAuth: app.globalData.userAuth
-    // })
     this.setData({
-      showCreateModal: true,
-      userCreateCard: {
-        username: this.data.userInfo.nickName
+      isCreating: true,
+      userCreateData: {
+        username: this.data.userWxInfo.nickName
       }
     })
   },
   cancelUserCreate: function(){
     this.setData({
-      showCreateModal: false,
-      userCreateCard: {}
+      isCreating: false,
+      userCreateData: {}
     })
   },
   confirmUserCreate: function(){
-    const sid = app.globalData.userAuth.sid;
-    const updateUserAuth = (res) => {
+    const { uid, sid } = app.data.userAppInfo;
+    const userCreateCallback = res => {
       if(res.code !== 200){
         console.log('register failed');
         console.log(res);
@@ -94,14 +127,8 @@ Page({
         });
       } else {
         this.setData({
-          showCreateModal: false,
-          userCreateCard: {}
-        });
-        app.globalData.userAuth = { sid: sid, uid: res.data.uid };
-        this.setData({
-          userCard: res.data,
-          userAuth: app.globalData.userAuth,
-          showRegister: false,
+          isCreating: false,
+          userCreateData: {}
         });
         wx.showToast({
           title: '创建成功',
@@ -109,151 +136,146 @@ Page({
           duration: 1000,
           mask: true
         });
+        app.getCurrentUser(uid, sid)
+          .then(() => {
+            this.setUserInfo()
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
     };
-    user.createUser(sid, this.data.userCreateCard, updateUserAuth);
+    user.createUser(uid, sid, this.data.userCreateData, userCreateCallback);
   },
   onUserCreateInput: function(event){
     this.setData({
-      [`userCreateCard.${event.currentTarget.id}`]: event.detail.value
+      [`userCreateData.${event.currentTarget.id}`]: event.detail.value
     });
   },
-  getCurrentUser: function(sid) {
-    const encryptedData = wx.getStorageSync('encryptedData');
-    const iv = wx.getStorageSync('iv');
-    const signature =wx.getStorageSync('signature');
+  // getCurrentUser: function(sid) {
+  //   const encryptedData = wx.getStorageSync('encryptedData');
+  //   const iv = wx.getStorageSync('iv');
+  //   const signature =wx.getStorageSync('signature');
 
-    const setUid = (res) => {
-      console.log(res)
-      if(res.code !== 200) {
-        console.log(res);
-        console.log('sid not valid, logging in again');
+  //   const setUid = (res) => {
+  //     console.log(res)
+  //     if(res.code !== 200) {
+  //       console.log(res);
+  //       console.log('sid not valid, logging in again');
 
-        const callBack = (userAuth) => {
-          const sid = userAuth.sid;
-          this.getCurrentUserAttempt(sid);
-        }
-        app.login(callBack);
-      } else if(res.data && res.data.is_new) {
-        console.log('this is a new user');
-        console.log(res);
-        this.setData({
-          showRegister: true
-        })
-      } else {
-        app.globalData.userAuth = { sid: sid, uid: res.data.uid };
-        app.globalData.userCard = res.data;
-        this.setData({
-          userAuth: { sid: sid, uid: res.data.uid },
-          userCard: res.data,
-          showRegister: false
-        });
-      }
-    };
-    user.findCurrentUser(sid, encryptedData, iv, signature, setUid);
-  },
-  getCurrentUserAttempt: function(sid) {
-    const encryptedData = wx.getStorageSync('encryptedData');
-    const iv = wx.getStorageSync('iv');
-    const signature =wx.getStorageSync('signature');
+  //       const callBack = (userAuth) => {
+  //         const sid = userAuth.sid;
+  //         this.getCurrentUserAttempt(sid);
+  //       }
+  //       app.login(callBack);
+  //     } else if(res.data && res.data.is_new) {
+  //       console.log('this is a new user');
+  //       console.log(res);
+  //       this.setData({
+  //         isNew: true
+  //       })
+  //     } else {
+  //       app.data.userAuth = { sid: sid, uid: res.data.uid };
+  //       app.data.userAppInfo = res.data;
+  //       this.setData({
+  //         userAuth: { sid: sid, uid: res.data.uid },
+  //         userAppInfo: res.data,
+  //         isNew: false
+  //       });
+  //     }
+  //   };
+  //   user.findCurrentUser(sid, encryptedData, iv, signature, setUid);
+  // },
+  // getCurrentUserAttempt: function(sid) {
+  //   const encryptedData = wx.getStorageSync('encryptedData');
+  //   const iv = wx.getStorageSync('iv');
+  //   const signature =wx.getStorageSync('signature');
 
-    const setUid = (res) => {
-      console.log(res);
+  //   const setUid = (res) => {
+  //     console.log(res);
 
-      if(res.data && res.data.is_new) {
-        console.log('this is a new user');
-        console.log(res);
-        this.setData({
-          showRegister: true
-        })
-      } else {
-        app.globalData.userAuth = { sid: sid, uid: res.data.uid };
-        app.globalData.userCard = res.data;
-        this.setData({
-          userAuth: { sid: sid, uid: res.data.uid },
-          userCard: res.data,
-          showRegister: false
-        });
-      }
-    };
+  //     if(res.data && res.data.is_new) {
+  //       console.log('this is a new user');
+  //       console.log(res);
+  //       this.setData({
+  //         isNew: true
+  //       })
+  //     } else {
+  //       app.data.userAuth = { sid: sid, uid: res.data.uid };
+  //       app.data.userAppInfo = res.data;
+  //       this.setData({
+  //         userAuth: { sid: sid, uid: res.data.uid },
+  //         userAppInfo: res.data,
+  //         isNew: false
+  //       });
+  //     }
+  //   };
 
-    user.findCurrentUser(sid, encryptedData, iv, signature, setUid);
-  },
-  getUserInfo: function(e) {
-    if(e.detail.errMsg === "getUserInfo:ok"){
-      app.globalData.userInfo = e.detail.userInfo;
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      });
-
-      const sid = app.globalData.userAuth && app.globalData.userAuth.sid;
-      this.getCurrentUser(sid);
-    };
-  },
+  //   user.findCurrentUser(sid, encryptedData, iv, signature, setUid);
+  // },
   cancelUserEdit: function(){
     this.setData({
       isEditingUser: false,
-      userEditCard: {}
+      userEditData: {}
     })
   },
   startUserEdit: function() {
-    const userData = this.data.userCard
+    const userAppInfo = app.data.userAppInfo
     this.setData({
       isEditingUser: true,
-      userEditCard: {
-        username: userData.username,
-        intro: userData.intro,
-        phone: userData.phone,
-        gender: userData.gender,
-        city: userData.city,
-        email: userData.email,
+      userEditData: {
+        username: userAppInfo.username,
+        intro: userAppInfo.intro,
+        phone: userAppInfo.phone,
+        gender: userAppInfo.gender,
+        city: userAppInfo.city,
+        email: userAppInfo.email,
       }
     })
   },
   onUserEditInput: function(e){
     this.setData({
-      [`userEditCard.${e.currentTarget.id}`]: e.detail.value
+      [`userEditData.${e.currentTarget.id}`]: e.detail.value
     })
   },
-  confirmUserEdit: function(){
-    const sid = app.globalData.userAuth.sid;
-    const uid = app.globalData.userAuth.uid;
-    const updateUser = (res) => {
-      if(res.code !== 200){
-        console.log('update failed');
-        console.log(res);
-        wx.showToast({
-          title: '修改失败',
-          icon: 'none',
-          duration: 1000,
-          mask: true
-        });
-      } else {
-        this.setData({
-          isEditingUser: false,
-          userEditCard: {}
-        });
-        app.globalData.userAuth = { sid: sid, uid: res.data.uid };
-        this.setData({
-          userCard: res.data,
-        })
-        console.log(res);
-        wx.showToast({
-          title: '修改成功',
-          icon: 'succes',
-          duration: 1000,
-          mask: true
-        });
-      }
-    };
-    user.updateUser(sid, uid, this.data.userEditCard, updateUser);
-  },
-  changeGender: function(e) {
-    if(this.data.isEditingUser) {
-      this.setData({
-        'userEditCard.gender': e.currentTarget.dataset.gender
-      });
-    }
-  }
+  // confirmUserEdit: function(){
+  //   const sid = app.data.userAuth.sid;
+  //   const uid = app.data.userAuth.uid;
+  //   const updateUser = (res) => {
+  //     if(res.code !== 200){
+  //       console.log('update failed');
+  //       console.log(res);
+  //       wx.showToast({
+  //         title: '修改失败',
+  //         icon: 'none',
+  //         duration: 1000,
+  //         mask: true
+  //       });
+  //     } else {
+  //       this.setData({
+  //         isEditingUser: false,
+  //         userEditData: {}
+  //       });
+  //       app.data.userAuth = { sid: sid, uid: res.data.uid };
+  //       this.setData({
+  //         userAppInfo: res.data,
+  //       })
+  //       console.log(res);
+  //       wx.showToast({
+  //         title: '修改成功',
+  //         icon: 'succes',
+  //         duration: 1000,
+  //         mask: true
+  //       });
+  //     }
+  //   };
+  //   user.updateUser(sid, uid, this.data.userEditData, updateUser);
+  // },
+  // changeGender: function(e) {
+  //   if(this.data.isEditingUser) {
+  //     this.setData({
+  //       'userEditData.gender': e.currentTarget.dataset.gender
+  //     });
+  //   }
+  // }
 })

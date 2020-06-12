@@ -69,7 +69,7 @@ Component({
         return tag.id
       })
       const eventData = {
-        userid: app.globalData.userAuth.uid,
+        userid: app.data.userAppInfo.uid,
         title: this.data.title,
         tags: tags,
         location: this.data.location,

@@ -26,7 +26,6 @@ Component({
   methods: {
     setAnnData: function() {
       const text = this.data.annData.text;
-      console.log(text)
       this.setData({
         announcement: text
       })
