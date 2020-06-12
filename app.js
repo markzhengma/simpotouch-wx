@@ -1,30 +1,91 @@
 const UserController = require('./controllers/user');
 const user = new UserController;
+const watcher = require('./utils/watcher');
+
 //app.js
 App({
   onLaunch: function () {
+    watcher.setWatcher(this);
+
     const uid = wx.getStorageSync('uid');
     const sid = wx.getStorageSync('sid');
     const encryptedData = wx.getStorageSync('encryptedData');
     const iv = wx.getStorageSync('iv');
     const signature =wx.getStorageSync('signature');
-    if(!uid || !sid) {
-      // 登录
-      this.login();
-    } else if (!encryptedData || !iv || !signature) {
-      this.getSetting();
-    } else {
-      console.log('UID IN STORAGE: ' + uid);
-      console.log('SID IN STORAGE: ' + sid);
-      console.log('ENCRYPTEDDATA IN STORAGE: ' + encryptedData);
-      console.log('IV IN STORAGE: ' + iv);
-      console.log('SIGNATURE IN STORAGE: ' + signature);
-      this.getCurrentUser(uid, sid);
-    }
+
+    this.checkUserAuth()
+      .then(res => {
+        if (res.authSetting['scope.userInfo']) {
+          console.log('got user authentication')
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+          if(!uid || !sid) {
+            this.login()
+              .then(() => {
+                this.setAppData('isCheckingUserAuth', false);
+              })
+              .catch(err => {
+                console.log('check user auth error');
+                console.log(err);
+              })
+            return;
+          } else if(!encryptedData || !iv || !signature) {
+            this.getUserWxInfo()
+              .then(() => {
+                this.setAppData('isCheckingUserAuth', false);
+              })
+              .catch(err => {
+                console.log('check user auth error');
+                console.log(err);
+              })
+            return;
+          } else {
+            this.getCurrentUser(uid, sid)
+              .then(() => {
+                this.setAppData('isCheckingUserAuth', false);
+              })
+              .catch(err => {
+                console.log('check user auth error');
+                console.log(err);
+              })
+          }
+        } else {
+          this.setAppData('isCheckingUserAuth', false);
+          console.log('need user authentication')
+        }
+      })
+      .catch(err => {
+        this.setAppData('isCheckingUserAuth', false);
+        console.log('check user auth error');
+        console.log(err);
+      })
+
   },
   data: {
     userWxInfo: null,
-    userAppInfo: null
+    userAppInfo: null,
+    isCheckingUserAuth: false,
+  },
+  watch: {
+    isCheckingUserAuth: function(newVal, oldVal) {
+      if(newVal) {
+        wx.hideTabBar({
+          animation: false,
+          fail: (err) => {
+            console.log('hide tab bar failed')
+            console.log(err)
+          }
+        });
+      } else {
+        wx.showTabBar({
+          animation: false,
+          fail: (err) => {
+            console.log('show tab bar failed')
+            console.log(err)
+          }
+        });
+          
+      }
+    }
   },
   setAppData: function(field, value) {
     console.log('set global data ' + field)
@@ -66,13 +127,8 @@ App({
           this.getUserWxInfo()
             .then(userWxInfoRes => {
               if(userWxInfoRes) {
-                const signature = userWxInfoRes.signature;
                 const encryptedData = userWxInfoRes.encryptedData;
                 const iv = userWxInfoRes.iv;
-        
-                wx.setStorageSync('signature', signature);
-                wx.setStorageSync('encryptedData', encryptedData);
-                wx.setStorageSync('iv', iv);
     
                 console.log('got user info');
                 
@@ -104,6 +160,8 @@ App({
                     const uid = loginRes.data.uid;
                     wx.setStorageSync('uid', uid);
                     wx.setStorageSync('sid', sid);
+
+                    this.setAppData('userAppInfo', loginRes.data);
   
                     resolve({ uid, sid })
                     break;
@@ -146,6 +204,13 @@ App({
     return new Promise(resolve => {
       wx.getUserInfo({
         success(res) {
+          const signature = res.signature;
+          const encryptedData = res.encryptedData;
+          const iv = res.iv;
+          wx.setStorageSync('signature', signature);
+          wx.setStorageSync('encryptedData', encryptedData);
+          wx.setStorageSync('iv', iv);
+          
           self.setAppData('userWxInfo', res.userInfo)
           resolve(res);
         }
@@ -153,25 +218,16 @@ App({
     })
   },
 
-  getSetting: function() {
-    console.log('get setting')
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          this.getUserWxInfo()
-          .then(userWxInfoRes => {
-            const signature = userWxInfoRes.signature;
-            const encryptedData = userWxInfoRes.encryptedData;
-            const iv = userWxInfoRes.iv;
-    
-            wx.setStorageSync('signature', signature);
-            wx.setStorageSync('encryptedData', encryptedData);
-            wx.setStorageSync('iv', iv);
-          })
+  checkUserAuth: function() {
+    this.setAppData('isCheckingUserAuth', true);
+    return new Promise(resolve => {
+      console.log('get setting')
+      // 获取用户信息
+      wx.getSetting({
+        success: res => {
+          resolve(res);
         }
-      }
+      })
     })
   },
 
@@ -194,9 +250,11 @@ App({
   },
 
   goToEventPage: function(id) {
-    this.setAppData('currentEventId', id);
-    wx.navigateTo({
-      url: `/pages/event/event?id=${id}`
-    })
+    if(!this.data.isCheckingUserAuth){
+      this.setAppData('currentEventId', id);
+      wx.navigateTo({
+        url: `/pages/event/event?id=${id}`
+      })
+    }
   }
 })

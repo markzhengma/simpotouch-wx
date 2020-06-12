@@ -69,7 +69,8 @@
     </view>
   </view>
   <view class="new-event-btn-group">
-    <button class="create-btn" bindtap="submitNewEvent">新建</button>
+    <!-- <button class="create-btn" bindtap="submitNewEvent">新建</button> -->
+    <button class="create-btn">新建</button>
     <button class="clear-btn" bindtap="clearEventInput">重置</button>
   </view>
 </view>
