@@ -24,7 +24,7 @@ Page({
     this.setData({
       userWxInfo: app.data.userWxInfo,
       userAppInfo: app.data.userAppInfo,
-      hasUserInfo: app.data.userWxInfo ? true : false,
+      hasUserInfo: app.data.userWxInfo && app.data.userAppInfo ? true : false,
       isNew: app.data.userAppInfo && app.data.userAppInfo.is_new ? true : false
     })
   },

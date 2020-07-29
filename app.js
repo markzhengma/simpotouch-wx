@@ -239,6 +239,7 @@ App({
         if(!res || res.code !== 200) {
           console.log('get current user failed');
           console.log(res);
+          resolve(res);
         } else {
           self.setAppData('userAppInfo', res.data);
           resolve(self.data)
